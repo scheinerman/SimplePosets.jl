@@ -2,12 +2,8 @@ module SimplePosets
 
 using SimpleGraphs
 
-<<<<<<< HEAD
 import Base.show
 export SimplePoset, elements, card, show
-=======
-export SimplePoset
->>>>>>> 1901fafdb90481be74ea4328552f8790f3de1672
 
 type SimplePoset{T}
     D::SimpleDigraph{T}
