@@ -109,7 +109,8 @@ julia> elements(P)
 * `stack(Plist...)` creates a new poset from the ones in the argument
   list by stacking one atop the next. The first poset in the list is
   at the bottom. We provide two operator versions of this: `P/Q`
-  stacks `P` over `Q` and `P\Q` stacks `Q` over `P`. 
+  stacks `P` over `Q` and `P\Q` stacks `Q` over `P`. Element labeling
+  is as in `+`. 
 
 
 Poset properties
