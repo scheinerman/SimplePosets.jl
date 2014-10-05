@@ -397,6 +397,31 @@ function *{S,T}(P::SimplePoset{S}, Q::SimplePoset{T})
     return PQ
 end
 
+# Disjoint union of posets
+function +{T}(x::SimplePoset{T}...)
+    np = length(x)
+
+    PP = SimplePoset{(T,Int)}()
+
+    for i=1:length(x)
+        P = x[i]
+        for e in P.D.V
+            add!(PP, (e,i))
+        end
+
+        for r in relations(P)
+            a = r[1]
+            b = r[2]
+            add!(PP.D, (a,i), (b,i))
+        end
+
+    end
+
+    return PP
+end
+
+
+
 # not much call for this, so we don't expose
 function strict_zeta_matrix(P::SimplePoset)
  elist = elements(P)

@@ -82,6 +82,28 @@ Operations
   elements is the intersection of the two element sets, and relations
   in the result are those relations common to both `P` and `Q`.
 * `P*Q` is the Cartesian product of the two posets.
+* `P+Q` is the disjoint union of two posets. Note his can be used
+  nicely with any number of posets. Each summand's elements is
+  extended with an integer (starting at 1) corresponding to its
+  position in the sum. That is, if `x` is an element of summand number
+  `i`, then in the sum it becomes the element `(x,i)`. For example:
+
+```julia
+julia> P = Chain(2)+Chain(3)+Chain(4)
+SimplePoset{(Int64,Int64)} (9 elements)
+
+julia> elements(P)
+9-element Array{(Int64,Int64),1}:
+ (1,1)
+ (1,2)
+ (1,3)
+ (2,1)
+ (2,2)
+ (2,3)
+ (3,2)
+ (3,3)
+ (4,3)
+```
 
 Poset properties
 ----------------
