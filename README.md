@@ -81,12 +81,13 @@ Operations
   same elements, but this is not necessary. The resulting poset's
   elements is the intersection of the two element sets, and relations
   in the result are those relations common to both `P` and `Q`.
-* `P*Q` is the Cartesian product of the two posets.
-* `P+Q` is the disjoint union of two posets. Note his can be used
-  nicely with any number of posets. Each summand's elements is
-  extended with an integer (starting at 1) corresponding to its
-  position in the sum. That is, if `x` is an element of summand number
-  `i`, then in the sum it becomes the element `(x,i)`. For example:
+* `P*Q` is the Cartesian product of the two posets (that may be of
+  different types).
+* `P+Q` is the disjoint union of two (or more) posets. The posets must
+  all be of the same type. Each summand's elements is extended with an
+  integer (starting at 1) corresponding to its position in the
+  sum. That is, if `x` is an element of summand number `i`, then in
+  the sum it becomes the element `(x,i)`. For example:
 
 ```julia
 julia> P = Chain(2)+Chain(3)+Chain(4)
@@ -104,6 +105,12 @@ julia> elements(P)
  (3,3)
  (4,3)
 ```
+
+* `stack(Plist...)` creates a new poset from the ones in the argument
+  list by stacking one atop the next. The first poset in the list is
+  at the bottom. We provide two operator versions of this: `P/Q`
+  stacks `P` over `Q` and `P\Q` stacks `Q` over `P`. 
+
 
 Poset properties
 ----------------
@@ -127,7 +134,7 @@ Really need width, height here. But for now
 
 cover relations, height, width, maxchain(s), maxantichain(s),
 chain cover, antichain cover (easier)
-relabel, disjoint union, stack
+relabel
 
 -------------------------------------------------------------------------------
 

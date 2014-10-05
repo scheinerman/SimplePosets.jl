@@ -399,8 +399,6 @@ end
 
 # Disjoint union of posets
 function +{T}(x::SimplePoset{T}...)
-    np = length(x)
-
     PP = SimplePoset{(T,Int)}()
 
     for i=1:length(x)
@@ -414,32 +412,51 @@ function +{T}(x::SimplePoset{T}...)
             b = r[2]
             add!(PP.D, (a,i), (b,i))
         end
-
     end
 
     return PP
 end
 
+# Stack a bunch of posets one atop the next. The first one in the
+# argument list is at the bottom.
+function stack{T}(x::SimplePoset{T}...)
+    np = length(x)
+    PP = +(x...)
 
+    for i=1:np-1
+        P = x[i]
+        for j=i+1:np
+            Q = x[j]
+            for a in P.D.V
+                for b in Q.D.V
+                    add!(PP.D, (a,i),(b,j))
+                end
+            end
+        end
+    end
+    return PP
+end
 
-# not much call for this, so we don't expose
-function strict_zeta_matrix(P::SimplePoset)
+# Binary operator version of stack P/Q puts P on top while P\Q puts Q
+# on top.
+/{T}(P::SimplePoset{T}, Q::SimplePoset{T}) = stack(Q,P)
+\{T}(P::SimplePoset{T}, Q::SimplePoset{T}) = stack(P,Q)
+
+# Zeta function as a matrix
+function zeta_matrix(P::SimplePoset)
  elist = elements(P)
     n = length(elist)
     Z = zeros(Int, n, n)
 
     for i=1:n
         for j=1:n
-            if has(P,elist[i],elist[j])
+            if i==j || has(P,elist[i],elist[j])
                 Z[i,j] = 1
             end
         end
     end    
     return Z
 end        
-
-# Zeta function as a matrix
-zeta_matrix(P::SimplePoset) = strict_zeta_matrix(P) + int(eye(card(P)))
    
 # Mobius function as a matrix
 mobius_matrix(P::SimplePoset) = int(inv(zeta_matrix(P)))
