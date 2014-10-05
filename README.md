@@ -1,25 +1,34 @@
 SimplePosets
 ============
 
-Simple partially ordered sets for Julia. This will be a wrapper around
-a `SimpleDigraph` object in which we enforce transitive closure and
-acyclicity.
+This module defines a `SimplePoset` type for Julia. A *poset* is a
+pair `(X,<)` where `X` is a set of elements and `<` is a relation on
+`X` that is irreflexive, antisymmetric, and transitive.
 
-Lots more to come!!
+This module depends on the `SimpleGraphs` module[^1].
 
 Basic Constructor
 -----------------
 
-Using `SimplePoset(T)` to create a new `SimplePoset` with elements 
+Use `SimplePoset(T)` to create a new `SimplePoset` with elements 
 having type `T` (which defaults to `Any`).
 
 
 Add/delete elements/relations
 -----------------------------
 
+Elements and relations can be added to a poset using these functions:
+
 * `add!(P,x)` adds a new element `x` to the ground set of `P`.
-* `add!(P,x,y)` inserts the relation `x<y` into `P`.
-* `delete!(P,x)` delete element `x` from this poset.
+* `add!(P,x,y)` inserts the relation `x<y` into `P`. If one (or both)
+  of `x` and `y` is not in `P`, it is added as well.
+
+Removal of a relation from a poset is rather tricky as we cannot
+simply delete on `x<y` relation without affecting transitivity. Hence,
+we do not provide a `delete!` function for relations. However, we do
+provide one for elements:
+
+* `delete!(P,x)` deletes element `x` from this poset.
 
 Basic inspection
 ----------------
@@ -92,9 +101,15 @@ Really need width, height here. But for now
   same as produced by `elements(P)`.
 
 
-To Do
------
+### To do list ###
 
 cover relations, height, width, maxchain(s), maxantichain(s),
 chain cover, antichain cover (easier)
-relabel
+relabel, disjoint union, stack
+
+
+
+[^1]: A `SimplePoset` is a wrapper around a `SimpleDigraph`
+	object. The functions for creating and manipulating a
+	`SimplePoset` ensure that the underlying digraph has directed
+	edges `(x,y)` exactly for those pairs of elements with `x<y`.
