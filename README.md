@@ -10,7 +10,7 @@ This module depends on the `SimpleGraphs` module.
 Basic Constructor
 -----------------
 
-Use `SimplePoset(T)` to create a new `SimplePoset` with elements 
+Use `SimplePoset(T)` to create a new `SimplePoset` with elements
 having type `T` (which defaults to `Any`).
 
 
@@ -38,17 +38,22 @@ Basic inspection
 * `relations(P)` returns a list of all pairs `(x,y)` with `x<y` in
   this poset.
 * `incomparables(P)` returns a list of all incomparable pairs. If
-  `(x,y)` is listed, we do not also list `(y,x)`. 
+  `(x,y)` is listed, we do not also list `(y,x)`.
 * `has(P,x)` determine if `x` is an element of `P`.
 * `has(P,x,y)` determine if `x<y` in the poset `P`.
 * `above(P,x)` returns a list of all elements above `x` in `P`.
 * `below(P,x)` returns a list of all elements below `x` in `P`.
 * `maximals(P)` returns a list of the minimal elements of `P`.
 * `minimals(P)` returns a list of the minimal elements of `P`.
+
+The following functions are not likely to be called by the casual user.
+
 * `check(P)` returns `true` provided the internal data structures of
   `P` are valid and `false` otherwise. **Note**: There should be no
   reason to use this function if the poset is created and manipulated
   by the functions provided in this module.
+* `hash(P)` computes a hash value for the poset. This enables `SimplePoset`
+  objects to serve as keys in dictionaries, and so forth.
 
 Constructors
 ------------
@@ -63,9 +68,9 @@ Constructors
 * `Chain(list)` creates a chain with elements drawn from `list` (in that
   order) in.
 * `Divisors(n)` creates the poset whose elements are the divisors of
-  `n` ordered by divisibility. 
+  `n` ordered by divisibility.
 * `RandomPoset(n,d)` creates a random `d`-dimensional poset on `n`
-  elements. 
+  elements.
 * `StandardExample(n)` creates the canonical `n`-dimensional poset
   with `2n` elements in two layers. The lower layer elements are named
   from `-1` to `-n` and the upper layer from `1` to `n`. We have
@@ -75,7 +80,7 @@ Operations
 ----------
 
 * `inv(P)` creates the inverse poset of `P`, i.e., we have `x<y` in
-  `P` iff we have `y<x` in `inv(P)`. 
+  `P` iff we have `y<x` in `inv(P)`.
 * `intersect(P,Q)` creates the intersection of the two posets (which
   must be of the same element type). Typically the two posets have the
   same elements, but this is not necessary. The resulting poset's
@@ -110,23 +115,26 @@ julia> elements(P)
   list by stacking one atop the next. The first poset in the list is
   at the bottom. We provide two operator versions of this: `P/Q`
   stacks `P` over `Q` and `P\Q` stacks `Q` over `P`. Element labeling
-  is as in `+`. 
+  is as in `+`.
 
 
 Poset properties
 ----------------
 
-Really need width, height here. But for now
 
 * `ComparabilityGraph(P)` returns a `SimpleGraph` whose vertices are
   the elements of `P` and in which two distinct vertices are adjacent
   iff they are comparable in `P`.
+* `CoverDigraph(P)` returns a directed graph whose vertices are the
+  elements of `P` in which `(x,y)` is an edges provided both `x<y` in `P`
+  and there is no `z` for which `x<z<y`. These are the edges that would
+  appear in a Hasse diagram of `P`.
 * `mobius(P)` creates the Mobius function for this poset (as a
   dictionary from pairs of elements to `Int` values).
 * `mobius_matrix(P)` is the inverse of `zeta_matrix(P)`.
 * `zeta(P)` creates the zeta function for this poset (as a dictionary
   from pairs of elements to `Int` values). We have `(x,y) ==> 1`
-  provided `x==y` or `x<y`, and `(x,y) ==> 0` otherwise. 
+  provided `x==y` or `x<y`, and `(x,y) ==> 0` otherwise.
 * `zeta_matrix(P)` produces the zeta matrix. Order of elements is the
   same as produced by `elements(P)`.
 

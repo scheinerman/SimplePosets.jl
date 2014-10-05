@@ -2,13 +2,14 @@ module SimplePosets
 
 using SimpleGraphs
 
-import Base.show, Base.isequal, Base.inv, Base.intersect, Base.zeta
+import Base.show, Base.isequal, Base.hash
+import Base.inv, Base.intersect, Base.zeta
 
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
 
-export SimplePoset, check
+export SimplePoset, check, hash
 export elements, relations, incomparables
-export card, show, add!, has, delete! 
+export card, show, add!, has, delete!
 export above, below
 export maximals, minimals
 
@@ -18,7 +19,7 @@ export zeta_matrix, zeta, mobius_matrix, mobius
 export Chain, Antichain, Divisors, Boolean, StandardExample
 export RandomPoset
 
-export ComparabilityGraph
+export ComparabilityGraph, CoverDigraph
 
 export inv, intersect
 
@@ -53,7 +54,7 @@ function check(P::SimplePoset)
         return false
     end
 
-    # transitive closure check 
+    # transitive closure check
     Z = zeta_matrix(P)
     if countnz(Z) != countnz(Z*Z)
         warn("Not transitively closed")
@@ -65,6 +66,9 @@ end
 # Check if two posets are the same
 isequal(P::SimplePoset, Q::SimplePoset) = isequal(P.D,Q.D)
 ==(P::SimplePoset, Q::SimplePoset) = isequal(P,Q)
+
+# hash function for this class based on P.D
+hash(P::SimplePoset, h::Uint64 = uint64(0)) = hash(P.D,h)
 
 # return a list of the elements in P
 elements(P::SimplePoset) = vlist(P.D)
@@ -83,7 +87,7 @@ function incomparables{T}(P::SimplePoset{T})
             push!(pairs, (els[j],els[k]) )
         end
     end
-    
+
     filter( p -> !has(P,p[1],p[2]) && !has(P,p[2],p[1]) , pairs)
 end
 
@@ -178,7 +182,7 @@ function Chain(n::Int)
     P = Antichain(n)
     for k=1:n
         add!(P,k)
-    end    
+    end
     if n > 1
         for k=1:n-1
             add!(P,k,k+1)
@@ -189,7 +193,7 @@ end
 
 # Construct a chain given a list of elements
 function Chain{T}(els::Array{T,1})
-    P = Antichain(els)    
+    P = Antichain(els)
     n = length(els)
     for k=1:n-1
         add!(P,els[k],els[k+1])
@@ -203,7 +207,7 @@ function first_prime_factor(n::Int)
     if isprime(n)
         return n
     end
-    
+
     for k=2:n
         if n%k == 0
             return k
@@ -211,9 +215,9 @@ function first_prime_factor(n::Int)
     end
 end
 
-# creates the set of divisors of a positive integer. should we expose? 
+# creates the set of divisors of a positive integer. should we expose?
 function divisors(n::Int)
-    if n<1 
+    if n<1
         error("divisors only works on positive integers")
     end
 
@@ -225,14 +229,14 @@ function divisors(n::Int)
     if n==p
         return IntSet(1,p)
     end
-    
+
     A = divisors(div(n,p))
     Alist = collect(A)
 
     Blist = [ p*x for x in Alist ]
 
     B = IntSet(Blist)
-    
+
     return union(A,B)
 end
 
@@ -265,7 +269,7 @@ function Boolean(n::Int)
     if n<1
         error("Argument must be a positive integer")
     end
-    
+
     P = SimplePoset(ASCIIString)
 
     NN = (1<<n) - 1
@@ -313,7 +317,7 @@ function RandomPoset(n::Int, d::Int)
     return P
 end
 
-    
+
 
 
 
@@ -323,7 +327,7 @@ function StandardExample(n::Int)
     if n<1
         error("Argument must be a positive integer")
     end
-    
+
     P = SimplePoset(Int)
     for e=1:n
         add!(P,e)
@@ -454,10 +458,10 @@ function zeta_matrix(P::SimplePoset)
                 Z[i,j] = 1
             end
         end
-    end    
+    end
     return Z
-end        
-   
+end
+
 # Mobius function as a matrix
 mobius_matrix(P::SimplePoset) = int(inv(zeta_matrix(P)))
 
@@ -468,7 +472,7 @@ function zeta{T}(P::SimplePoset{T})
     for a in els
         for b in els
             if a==b || has(P,a,b)
-                z[a,b] = 1          
+                z[a,b] = 1
             else
                 z[a,b] = 0
             end
@@ -496,6 +500,32 @@ end
 
 # The comparability graph of a poset
 ComparabilityGraph(P::SimplePoset) = simplify(P.D)
-               
+
+# The CoverDigraph of a poset P is a directed graph that has the same
+# vertices as P, in which (x,y) is an edge iff x<y and there is no z with x<z<y
+function CoverDigraph{T}(P::SimplePoset{T})
+    CD = SimpleDigraph{T}()
+    for v in P.D.V
+        add!(CD,v)
+    end
+
+    for r in relations(P)
+        x = r[1]
+        y = r[2]
+        add_flag::Bool = true
+        for z in P.D.V
+            if has(P,x,z) && has(P,z,y)
+                add_flag = false
+                break
+            end
+        end
+        if add_flag
+            add!(CD,x,y)
+        end
+    end
+    return CD
+end
+
+
 end # end of module SimplePosets
 
