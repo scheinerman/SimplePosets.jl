@@ -5,7 +5,7 @@ This module defines a `SimplePoset` type for Julia. A *poset* is a
 pair `(X,<)` where `X` is a set of elements and `<` is a relation on
 `X` that is irreflexive, antisymmetric, and transitive.
 
-This module depends on the `SimpleGraphs` module[^1].
+This module depends on the `SimpleGraphs` module.
 
 Basic Constructor
 -----------------
@@ -107,9 +107,12 @@ cover relations, height, width, maxchain(s), maxantichain(s),
 chain cover, antichain cover (easier)
 relabel, disjoint union, stack
 
+-------------------------------------------------------------------------------
+
+### Under the hood ###
 
 
-[^1]: A `SimplePoset` is a wrapper around a `SimpleDigraph`
-	object. The functions for creating and manipulating a
-	`SimplePoset` ensure that the underlying digraph has directed
-	edges `(x,y)` exactly for those pairs of elements with `x<y`.
+A `SimplePoset` is a wrapper around a `SimpleDigraph` object. The
+functions for creating and manipulating a `SimplePoset` ensure that
+the underlying digraph has directed edges `(x,y)` exactly for those
+pairs of elements with `x<y`.
