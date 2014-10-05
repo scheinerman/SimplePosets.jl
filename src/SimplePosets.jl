@@ -21,7 +21,7 @@ export RandomPoset
 
 export ComparabilityGraph, CoverDigraph
 
-export inv, intersect
+export inv, intersect, stack
 
 type SimplePoset{T}
     D::SimpleDigraph{T}
