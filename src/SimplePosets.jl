@@ -6,13 +6,14 @@ import Base.show, Base.isequal, Base.hash
 import Base.inv, Base.intersect, Base.zeta
 
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
+import SimpleGraphs.relabel
 
 export SimplePoset, check, hash
 export elements, relations, incomparables
 export card, show, add!, has, delete!
 export above, below
 export maximals, minimals
-
+export relabel
 export zeta_matrix, zeta, mobius_matrix, mobius
 
 
@@ -525,6 +526,32 @@ function CoverDigraph{T}(P::SimplePoset{T})
     end
     return CD
 end
+
+
+# Relabel the vertics of a poset based on a dictionary mapping old
+# element names to new
+function relabel{S,T}(P::SimplePoset{S}, label::Dict{S,T})
+    Q = SimplePoset{T}()
+    Q.D = relabel(P.D, label)
+    return Q
+end
+
+# Relabel the elements with the integers 1:n
+function relabel{S}(P::SimplePoset{S})
+    verts = vlist(P.D)
+    n = length(verts)
+    label = Dict{S,Int}()
+    sizehint(label,n)
+
+    for idx = 1:n
+        label[verts[idx]] = idx
+    end
+
+    return relabel(P,label)
+end
+
+
+
 
 
 end # end of module SimplePosets
