@@ -116,6 +116,36 @@ julia> elements(P)
   at the bottom. We provide two operator versions of this: `P/Q`
   stacks `P` over `Q` and `P\Q` stacks `Q` over `P`. Element labeling
   is as in `+`.
+* `relabel(P,labels)` is used to create a new poset in which the elements 
+   have new names (as given by the dictionary `labels`). Calling 
+   `relabel(P)` gives a new poset in which the new element names are 
+   the integers `1` through `n`. Here's an example:
+
+```julia
+julia> P = Chain(3) + Chain(3)
+SimplePoset{(Int64,Int64)} (6 elements)
+
+julia> elements(P)
+6-element Array{(Int64,Int64),1}:
+ (1,1)
+ (1,2)
+ (2,1)
+ (2,2)
+ (3,1)
+ (3,2)
+
+julia> Q = relabel(P)
+SimplePoset{Int64} (6 elements)
+
+julia> elements(Q)
+6-element Array{Int64,1}:
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+```
 
 
 Poset properties
