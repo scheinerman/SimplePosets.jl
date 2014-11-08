@@ -1,0 +1,49 @@
+\documentclass[12pt]{amsart}
+\usepackage[margin=1.25in]{geometry}
+\usepackage{graphicx}
+\usepackage{txfonts}
+\pagestyle{plain}
+
+\begin{document}
+
+\begin{center}
+  \textbf{Adding/Deleting Elements/Relations To/From a Poset}
+\end{center}
+
+Let $P=(X,\le)$ be a partially order set (or poset). Here $X$ is a set
+of \emph{elements} and $\le$ is a reflexive, antisymmetric, transitive
+\emph{relation} on $X$.
+
+We wish to consider the following four operations: (1)~add an element
+to a poset, (2)~delete an element from a poset, (3)~add a relation
+to a poset, and (4)~delete a relation from a poset. 
+
+\section*{Adding/Deleting Elements}
+
+Operations on elements are relatively simple to describe. Let
+$P=(X,\le)$ be a poset. 
+
+If $a\notin X$, then to add the element $a$ to $P$ results in a new
+poset that includes $a$ in which $a$ is related only to
+itself. Formally, let $P'= P+a$ be the poset $P'=(X',\le')$ where we
+have the following:
+\begin{enumerate}
+\item $X' = X \cup \{a\}$.
+\item $\mathord{\le'} = \mathord{\le} \cup \{(a,a)\}$. That is, 
+  \begin{itemize}
+  \item $\forall x,y \in X, x\le'y\iff x\le y$,
+  \item $\forall x \in X$, $x\not\le'a$ and $a \not\le' x$, and
+  \item $a\le' a$.
+  \end{itemize}
+\end{enumerate}
+
+Element deletion is also easy to describe. Deleting an element $a$
+from $P$ deletes $a$ from the set $X$ and all remaining elements have
+the same relations they had before. Formally, for $a \in X$, let
+$P'=P-a$ be the poset $P'=(X',\le')$ where we have the following:
+\begin{enumerate}
+\item $X' = X - \{a\}$.
+\item $\forall x,y \in X', x \le' y \iff x\le y$.
+\end{enumerate}
+
+\end{document}
