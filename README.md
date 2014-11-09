@@ -17,18 +17,18 @@ having type `T` (which defaults to `Any`).
 Add/delete elements/relations
 -----------------------------
 
-Elements and relations can be added to a poset using these functions:
+Elements and relations can be added to or deleted from a poset using
+these functions:
 
 * `add!(P,x)` adds a new element `x` to the ground set of `P`.
 * `add!(P,x,y)` inserts the relation `x<y` into `P`. If one (or both)
   of `x` and `y` is not in `P`, it is added as well.
-
-Removal of a relation from a poset is rather tricky as we cannot
-simply delete on `x<y` relation without affecting transitivity. Hence,
-we do not provide a `delete!` function for relations. However, we do
-provide one for elements:
-
 * `delete!(P,x)` deletes element `x` from this poset.
+* `delete!(P,x,y)` delete the relation `x<y` from `P` and for any `z`
+  with `x < z < y`, also delete `x<z` and `z<y`.
+
+More detail on element/relation addition/deletion can be found in the
+document `addition-deletion.pdf` found in the `doc` folder. 
 
 Basic inspection
 ----------------
@@ -43,6 +43,8 @@ Basic inspection
 * `has(P,x,y)` determine if `x<y` in the poset `P`.
 * `above(P,x)` returns a list of all elements above `x` in `P`.
 * `below(P,x)` returns a list of all elements below `x` in `P`.
+* `interval(P,x,y)` returns a list of all elements `z` that satisfy
+  `x<z<y`. 
 * `maximals(P)` returns a list of the minimal elements of `P`.
 * `minimals(P)` returns a list of the minimal elements of `P`.
 
@@ -171,9 +173,8 @@ Poset properties
 
 ### To do list ###
 
-cover relations, height, width, maxchain(s), maxantichain(s),
+height, width, maxchain(s), maxantichain(s),
 chain cover, antichain cover (easier)
-relabel
 
 -------------------------------------------------------------------------------
 

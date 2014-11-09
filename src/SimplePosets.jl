@@ -11,7 +11,7 @@ import SimpleGraphs.relabel
 export SimplePoset, check, hash
 export elements, relations, incomparables
 export card, show, add!, has, delete!
-export above, below
+export above, below, interval
 export maximals, minimals
 export relabel
 export zeta_matrix, zeta, mobius_matrix, mobius
@@ -39,6 +39,7 @@ SimplePoset(T::DataType=Any) = SimplePoset{T}()
 # Validation check. This should not be necessary to ever use if the
 # poset was properly built.
 function check(P::SimplePoset)
+   
     # cycle detection
     PP = deepcopy(P)
     while true
@@ -135,6 +136,26 @@ end
 # Delete an element from P
 delete!(P::SimplePoset, x) = delete!(P.D,x)
 
+# Delete a relation from P (see Doc folder in github for explanation)
+function delete!(P::SimplePoset, x, y)
+    if !has(P,x) || !has(P,y) || x==y || !has(P,x,y)
+        return false
+    end
+
+    delete!(P.D, x, y)
+
+    for z in P.D.V
+        if z==x || z==y
+            continue
+        end
+        if has(P,x,z) && has(P,z,y)
+            delete!(P.D,x,z)
+            delete!(P.D,z,y)
+        end
+    end
+    return true
+end
+
 # Check if a particular element is in the ground set
 has{T}(P::SimplePoset{T}, x) = has(P.D, x)
 
@@ -149,12 +170,19 @@ function above(P::SimplePoset, x)
     return collect(P.D.N[x])
 end
 
-# return a liset of all elements < x
+# return a list of all elements < x
 function below(P::SimplePoset, x)
     if !has(P,x)
         error("This poset does not contain ", x)
     end
     return collect(P.D.NN[x])
+end
+
+# return a list of all elements z with x < z < y
+function interval(P::SimplePoset, x, y)
+    A = Set(above(P,x))
+    B = Set(below(P,y))
+    return collect(intersect(A,B))
 end
 
 # Construct an antichain with n elements 1,2,...,n
