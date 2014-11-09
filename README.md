@@ -40,7 +40,9 @@ Basic inspection
 * `incomparables(P)` returns a list of all incomparable pairs. If
   `(x,y)` is listed, we do not also list `(y,x)`.
 * `has(P,x)` determine if `x` is an element of `P`.
-* `has(P,x,y)` determine if `x<y` in the poset `P`.
+* `has(P,x,y)` determine if `x<y` in the poset `P`. **Note**: Calling
+  `has(P,x,x)` for an element `x` of this poset returns `false`. All
+  our methods concern the strict relation `<`.
 * `above(P,x)` returns a list of all elements above `x` in `P`.
 * `below(P,x)` returns a list of all elements below `x` in `P`.
 * `interval(P,x,y)` returns a list of all elements `z` that satisfy
