@@ -1,9 +1,9 @@
 \documentclass[12pt]{amsart}
-\usepackage[margin=1.25in]{geometry}
-\usepackage{graphicx}
+\usepackage[margin=1.5in]{geometry}
+%\usepackage{graphicx}
 \usepackage{txfonts}
 \pagestyle{plain}
-
+\nofiles
 \begin{document}
 
 \begin{center}
@@ -32,7 +32,7 @@ have the following:
 \item $\mathord{\le'} = \mathord{\le} \cup \{(a,a)\}$. That is, 
   \begin{itemize}
   \item $\forall x,y \in X, x\le'y\iff x\le y$,
-  \item $\forall x \in X$, $x\not\le'a$ and $a \not\le' x$, and
+  \item $\forall x \in X,\ x\not\le'a$ and $a \not\le' x$, and
   \item $a\le' a$.
   \end{itemize}
 \end{enumerate}
@@ -43,7 +43,89 @@ the same relations they had before. Formally, for $a \in X$, let
 $P'=P-a$ be the poset $P'=(X',\le')$ where we have the following:
 \begin{enumerate}
 \item $X' = X - \{a\}$.
-\item $\forall x,y \in X', x \le' y \iff x\le y$.
+\item $\forall x,y \in X',\ x \le' y \iff x\le y$.
 \end{enumerate}
+
+Note that element addition and deletion operations need not
+commute. While it is true that $(P+a)-a=P$, in general we have
+$(P-a)+a\not=P$. 
+
+
+\section*{Adding/Deleting Relations}
+
+Adding a relation to a poset requires us to include additional
+relations implied by transitivity. Let $P=(X,\le)$ be a poset
+containing incomparable elements $a$ and $b$.
+
+We define $P+(a<b)$ to be the poset $P' = (X',\le')$ in which we have
+the following:
+\begin{itemize}
+\item $X' = X$.
+\item $\forall x,y \in X', \ x \le' y \iff (x \le y) \text{ or } 
+  (x \le a \text{ and } b \le y)$.
+\end{itemize}
+Stated differently, $\le'$ is the minimal superset of $\le$ that
+includes the pair $(a,b)$ and that is reflexive, antisymmetric, and
+transitive. 
+
+There does not appear to be ``best'' way to define relation
+deletion. Suppose $P=(X,\le)$ is a poset in which $a<b$; we want to
+define $P' = P-(a<b)$.  For example, suppose $P=([3],\le)$ is the
+total order $1<2<3$. How shall we define $P-(1<3)$? Since we delete
+$(1,3)$ from the relation, we cannot have both $1<2$ and $2<3$, so one
+of those must be deleted as well.  This leads to two possible choices
+for $\le'$ are these:
+\begin{itemize}
+\item $\mathord{\le'} = \{(1,1),(2,2),(3,3), (1,2) \}$ and
+\item $\mathord{\le'} = \{(1,1),(2,2),(3,3), (2,3) \}$.
+\end{itemize}
+There's no reasonable way to choose between these alternatives. Both
+are derived from $\le$ with a minimum number of changes. So we take
+another approach by deleting both $1<2$ and $2<3$. This results in the
+antichain on $[3]$. 
+
+More generally, when we delete $a<b$ from $P$ we need to delete other
+relations. In particular, if there is an $x$ with $a<x<b$, we cannot
+keep both $a<x$ and $x<b$. Our solution is to delete \emph{both}. 
+
+Thus we define $P-(a<b)$ to be the poset $P' = (X',\le')$ in which 
+$X'=X$ and
+\[
+\mathord{\le'} = \mathord{\le} 
+- \bigl\{ (a,b) \bigr\}
+- \bigl\{(a,x),(x,b) : a<x<b \bigr\} .
+\]
+
+\noindent\textbf{Claim}. \emph{$P'$ is a poset.}
+
+\begin{proof}
+  We need to check that $\le'$ is reflexive, antisymmetric, and
+  transitive. 
+
+  Since we have not deleted any relation of the form $(x,x)$ from
+  $\le$, it follows that $\le'$ is reflexive.
+
+  Since $\mathord{\le'} \subset \mathord{\le}$ it follows that 
+  \[
+  (x \le' y \text{ and } y \le' x) \Rightarrow
+  (x \le y \text{ and } y \le x) \Rightarrow x=y .
+  \]
+
+  Finally, we must show that $\le'$ is transitive. Suppose $x <' y <'
+  z$ but we do not have $x <' z$. This means that $(x,z)$ was a
+  relation deleted from $\le$ and so we have one of the following:
+  \begin{enumerate}
+  \item $(x,z) = (a,b)$,
+  \item $a=x < z < b$, or
+  \item $a<x<z=b$.
+  \end{enumerate}
+  
+  Case (1) cannot hold because then we have $x=a<y<b=z$ in which case
+  neither $x<'y$ nor $y<'z$ contradicting the supposition that
+  $x<'y<'z$. 
+
+  In case (2) we have that $a=x < y < z < b$ contradicting $x <' y$,
+  and a similar contradiction holds in case~(3). 
+\end{proof}
 
 \end{document}
