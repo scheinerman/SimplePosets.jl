@@ -1,5 +1,4 @@
-SimplePosets
-============
+# SimplePosets
 
 This module defines a `SimplePoset` type for Julia. A *poset* is a
 pair `(X,<)` where `X` is a set of elements and `<` is a relation on
@@ -7,15 +6,13 @@ pair `(X,<)` where `X` is a set of elements and `<` is a relation on
 
 This module depends on the `SimpleGraphs` module.
 
-Basic Constructor
------------------
+## Basic constructor
 
 Use `SimplePoset(T)` to create a new `SimplePoset` with elements
 having type `T` (which defaults to `Any`).
 
 
-Add/delete elements/relations
------------------------------
+## Add/delete elements/relations
 
 Elements and relations can be added to or deleted from a poset using
 these functions:
@@ -28,10 +25,9 @@ these functions:
   with `x < z < y`, also delete `x<z` and `z<y`.
 
 More detail on element/relation addition/deletion can be found in the
-document `addition-deletion.pdf` found in the `doc` folder. 
+document `addition-deletion.pdf` found in the `doc` folder.
 
-Basic inspection
-----------------
+## Basic inspection
 
 * `elements(P)` returns a list of the elements in `P`
 * `card(P)` returns the cardinality of `P` (number of elements).
@@ -46,9 +42,10 @@ Basic inspection
 * `above(P,x)` returns a list of all elements above `x` in `P`.
 * `below(P,x)` returns a list of all elements below `x` in `P`.
 * `interval(P,x,y)` returns a list of all elements `z` that satisfy
-  `x<z<y`. 
+  `x<z<y`.
 * `maximals(P)` returns a list of the minimal elements of `P`.
 * `minimals(P)` returns a list of the minimal elements of `P`.
+
 
 The following functions are not likely to be called by the casual user.
 
@@ -59,8 +56,7 @@ The following functions are not likely to be called by the casual user.
 * `hash(P)` computes a hash value for the poset. This enables `SimplePoset`
   objects to serve as keys in dictionaries, and so forth.
 
-Constructors
-------------
+## Constructors
 
 * `Antichain(n)` creates an antichain with elements `1:n`
 * `Antichain(list)` creates an antichain with elements drawn from
@@ -80,8 +76,7 @@ Constructors
   from `-1` to `-n` and the upper layer from `1` to `n`. We have
   `-i<j` exactly when `i!=j`.
 
-Operations
-----------
+## Operations
 
 * `inv(P)` creates the inverse poset of `P`, i.e., we have `x<y` in
   `P` iff we have `y<x` in `inv(P)`.
@@ -120,9 +115,9 @@ julia> elements(P)
   at the bottom. We provide two operator versions of this: `P/Q`
   stacks `P` over `Q` and `P\Q` stacks `Q` over `P`. Element labeling
   is as in `+`.
-* `relabel(P,labels)` is used to create a new poset in which the elements 
-   have new names (as given by the dictionary `labels`). Calling 
-   `relabel(P)` gives a new poset in which the new element names are 
+* `relabel(P,labels)` is used to create a new poset in which the elements
+   have new names (as given by the dictionary `labels`). Calling
+   `relabel(P)` gives a new poset in which the new element names are
    the integers `1` through `n`. Here's an example:
 
 ```julia
@@ -152,8 +147,7 @@ julia> elements(Q)
 ```
 
 
-Poset properties
-----------------
+## Poset properties
 
 
 * `ComparabilityGraph(P)` returns a `SimpleGraph` whose vertices are
@@ -171,14 +165,48 @@ Poset properties
   provided `x==y` or `x<y`, and `(x,y) ==> 0` otherwise.
 * `zeta_matrix(P)` produces the zeta matrix. Order of elements is the
   same as produced by `elements(P)`.
+* `height(P)` returns the maximum size of a chain.
+
+## Linear extensions
+
+The file `linear_extensions.jl` contains functions to find one or all
+linear extensions of a poset. This module is not loaded by default and
+so requires the command `include("linear_extensions.jl")`.
+
+**Note**: The function `all_linear_extensions` uses the `Memoize`
+  module which can be installed with `Pkg.add("Memoize")`.
+
++ `linear_extension(P)` find one linear extension of the poset (as an
+  `Array`).
++ `all_linear_extensions(P)` returns a `Set` containing all the linear
+  extensions of the poset. This is a *very* expensive operation in
+  both time and memory. It is memoized to make it more efficient, but
+  the memory it uses is *not* freed after use.
+
+```julia
+julia> P = Divisors(12)
+SimplePoset{Int64} (6 elements)
+
+julia> linear_extension(P)'
+1x6 Array{Int64,2}:
+ 1  2  3  4  6  12
+
+julia> collect(all_linear_extensions(P))
+5-element Array{Array{Int64,1},1}:
+ [1,2,3,4,6,12]
+ [1,2,3,6,4,12]
+ [1,3,2,6,4,12]
+ [1,2,4,3,6,12]
+ [1,3,2,4,6,12]
+```
+
+## Miscellaneous
 
 
 ### To do list ###
 
-height, width, maxchain(s), maxantichain(s),
-chain cover, antichain cover (easier)
+width, maxchain(s), maxantichain(s), chain cover, antichain cover (easier)
 
--------------------------------------------------------------------------------
 
 ### Under the hood ###
 

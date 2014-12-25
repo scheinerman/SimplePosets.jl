@@ -22,7 +22,7 @@ export RandomPoset
 
 export ComparabilityGraph, CoverDigraph
 
-export inv, intersect, stack
+export inv, intersect, stack, height
 
 type SimplePoset{T}
     D::SimpleDigraph{T}
@@ -39,7 +39,7 @@ SimplePoset(T::DataType=Any) = SimplePoset{T}()
 # Validation check. This should not be necessary to ever use if the
 # poset was properly built.
 function check(P::SimplePoset)
-   
+
     # cycle detection
     PP = deepcopy(P)
     while true
@@ -578,9 +578,22 @@ function relabel{S}(P::SimplePoset{S})
     return relabel(P,label)
 end
 
+# Compute the height by stripping off minimals repeatedly
 
+function height(P::SimplePoset)
+    PP = deepcopy(P)
+    result = 0
 
+    while card(PP) > 0
+        result += 1
+        M = minimals(PP)
+        for x in M
+            delete!(PP,x)
+        end
+    end
 
+    return result
+end
 
 end # end of module SimplePosets
 
