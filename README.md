@@ -169,9 +169,9 @@ julia> elements(Q)
 
 ## Linear extensions
 
-The file `linear_extensions.jl` contains functions to find one or all
-linear extensions of a poset. This module is not loaded by default and
-so requires the command `include("linear_extensions.jl")`.
+The file `linear_extensions.jl`  in the `src` folder contains functions 
+to find one or all linear extensions of a poset. This module is not loaded 
+by default and so requires the command `include("linear_extensions.jl")`.
 
 **Note**: The function `all_linear_extensions` uses the `Memoize`
   module which can be installed with `Pkg.add("Memoize")`.
@@ -202,14 +202,11 @@ julia> collect(all_linear_extensions(P))
 
 ## Miscellaneous
 
-
 ### To do list ###
 
 width, maxchain(s), maxantichain(s), chain cover, antichain cover (easier)
 
-
 ### Under the hood ###
-
 
 A `SimplePoset` is a wrapper around a `SimpleDigraph` object. The
 functions for creating and manipulating a `SimplePoset` ensure that
