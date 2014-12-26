@@ -87,7 +87,8 @@ The following functions are not likely to be called by the casual user.
 ## Operations
 
 * `inv(P)` creates the inverse poset of `P`, i.e., we have `x<y` in
-  `P` iff we have `y<x` in `inv(P)`.
+  `P` iff we have `y<x` in `inv(P)`. We can use `P'` as a synonym for 
+  `inv(P)`.
 * `intersect(P,Q)` creates the intersection of the two posets (which
   must be of the same element type). Typically the two posets have the
   same elements, but this is not necessary. The resulting poset's

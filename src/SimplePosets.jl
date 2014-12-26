@@ -389,6 +389,9 @@ function inv{T}(P::SimplePoset{T})
     return Q
 end
 
+# We can use P' to mean inv(P) also
+ctranspose(P::SimplePoset) = inv(P)
+
 # Create the intersection of two posets (must be of same element
 # type). Ideally, the two posets have the same set of elements, but
 # this is not necessary; if they don't we just intersect the element
