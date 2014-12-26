@@ -54,7 +54,15 @@ The following functions are not likely to be called by the casual user.
   reason to use this function if the poset is created and manipulated
   by the functions provided in this module.
 * `hash(P)` computes a hash value for the poset. This enables `SimplePoset`
-  objects to serve as keys in dictionaries, and so forth.
+  objects to serve as keys in dictionaries, and so forth. 
+* `element_type(P)` returns the datatype of the elements in this poset. For example:
+
+  ```julia
+  julia> P = Boolean(3);
+
+  julia> element_type(P)
+  ASCIIString (constructor with 2 methods)
+  ```
 
 ## Constructors
 
@@ -93,22 +101,22 @@ The following functions are not likely to be called by the casual user.
   sum. That is, if `x` is an element of summand number `i`, then in
   the sum it becomes the element `(x,i)`. For example:
 
-```julia
-julia> P = Chain(2)+Chain(3)+Chain(4)
-SimplePoset{(Int64,Int64)} (9 elements)
+  ```julia
+  julia> P = Chain(2)+Chain(3)+Chain(4)
+  SimplePoset{(Int64,Int64)} (9 elements)
 
-julia> elements(P)
-9-element Array{(Int64,Int64),1}:
- (1,1)
- (1,2)
- (1,3)
- (2,1)
- (2,2)
- (2,3)
- (3,2)
- (3,3)
- (4,3)
-```
+  julia> elements(P)
+  9-element Array{(Int64,Int64),1}:
+   (1,1)
+   (1,2)
+   (1,3)
+   (2,1)
+   (2,2)
+   (2,3)
+   (3,2)
+   (3,3)
+   (4,3)
+  ```
 
 * `stack(Plist...)` creates a new poset from the ones in the argument
   list by stacking one atop the next. The first poset in the list is
@@ -120,31 +128,31 @@ julia> elements(P)
    `relabel(P)` gives a new poset in which the new element names are
    the integers `1` through `n`. Here's an example:
 
-```julia
-julia> P = Chain(3) + Chain(3)
-SimplePoset{(Int64,Int64)} (6 elements)
+   ```julia
+   julia> P = Chain(3) + Chain(3)
+   SimplePoset{(Int64,Int64)} (6 elements)
 
-julia> elements(P)
-6-element Array{(Int64,Int64),1}:
- (1,1)
- (1,2)
- (2,1)
- (2,2)
- (3,1)
- (3,2)
+   julia> elements(P)
+   6-element Array{(Int64,Int64),1}:
+    (1,1)
+    (1,2)
+    (2,1)
+    (2,2)
+    (3,1)
+    (3,2)
 
-julia> Q = relabel(P)
-SimplePoset{Int64} (6 elements)
+   julia> Q = relabel(P)
+   SimplePoset{Int64} (6 elements)
 
-julia> elements(Q)
-6-element Array{Int64,1}:
- 1
- 2
- 3
- 4
- 5
- 6
-```
+   julia> elements(Q)
+   6-element Array{Int64,1}:
+    1
+    2
+    3
+    4
+    5
+    6
+   ```
 
 
 ## Poset properties
@@ -183,28 +191,24 @@ by default and so requires the command `include("linear_extensions.jl")`.
   both time and memory. It is memoized to make it more efficient, but
   the memory it uses is *not* freed after use.
 
-```julia
-julia> P = Divisors(12)
-SimplePoset{Int64} (6 elements)
+  ```julia
+  julia> P = Divisors(12)
+  SimplePoset{Int64} (6 elements)
 
-julia> linear_extension(P)'
-1x6 Array{Int64,2}:
- 1  2  3  4  6  12
+  julia> linear_extension(P)'
+  1x6 Array{Int64,2}:
+   1  2  3  4  6  12
 
-julia> collect(all_linear_extensions(P))
-5-element Array{Array{Int64,1},1}:
- [1,2,3,4,6,12]
- [1,2,3,6,4,12]
- [1,3,2,6,4,12]
- [1,2,4,3,6,12]
- [1,3,2,4,6,12]
-```
+  julia> collect(all_linear_extensions(P))
+  5-element Array{Array{Int64,1},1}:
+   [1,2,3,4,6,12]
+   [1,2,3,6,4,12]
+   [1,3,2,6,4,12]
+   [1,2,4,3,6,12]
+   [1,3,2,4,6,12]
+  ```
 
 ## Miscellaneous
-
-### To do list ###
-
-width, maxchain(s), maxantichain(s), chain cover, antichain cover (easier)
 
 ### Under the hood ###
 
@@ -212,3 +216,9 @@ A `SimplePoset` is a wrapper around a `SimpleDigraph` object. The
 functions for creating and manipulating a `SimplePoset` ensure that
 the underlying digraph has directed edges `(x,y)` exactly for those
 pairs of elements with `x<y`.
+
+
+### To do list ###
+
+width, maxchain(s), maxantichain(s), chain cover, antichain cover (easier)
+

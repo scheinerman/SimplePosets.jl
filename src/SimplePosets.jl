@@ -8,7 +8,7 @@ import Base.inv, Base.intersect, Base.zeta
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
 import SimpleGraphs.relabel
 
-export SimplePoset, check, hash
+export SimplePoset, check, hash, element_type
 export elements, relations, incomparables
 export card, show, add!, has, delete!
 export above, below, interval
@@ -64,6 +64,8 @@ function check(P::SimplePoset)
     end
     return true
 end
+
+element_type{T}(P::SimplePoset{T}) = T
 
 # Check if two posets are the same
 isequal(P::SimplePoset, Q::SimplePoset) = isequal(P.D,Q.D)

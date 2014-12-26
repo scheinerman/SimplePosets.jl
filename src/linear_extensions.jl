@@ -15,8 +15,6 @@ end
 
 using Memoize
 
-element_type{T}(P::SimplePoset{T}) = T
-
 @memoize function all_linear_extensions(P::SimplePoset)
     T = element_type(P)
     result = Set{Array{T,1}}()
