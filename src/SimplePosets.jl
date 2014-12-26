@@ -8,7 +8,7 @@ import Base.inv, Base.intersect, Base.zeta
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
 import SimpleGraphs.relabel
 
-export SimplePoset, check, hash, element_type
+export SimplePoset, IntPoset, check, hash, element_type
 export elements, relations, incomparables
 export card, show, add!, has, delete!
 export above, below, interval
@@ -32,6 +32,7 @@ type SimplePoset{T}
         new(D)
     end
 end
+
 
 # Create a new poset whose elements have a specific type (default Any)
 SimplePoset(T::DataType=Any) = SimplePoset{T}()
@@ -198,6 +199,8 @@ function Antichain(n::Int)
     end
     return P
 end
+
+IntPoset(n::Int) = Antichain(n)
 
 # Construction an antichain from a list of elements
 function Antichain{T}(els::Array{T,1})

@@ -54,7 +54,7 @@ The following functions are not likely to be called by the casual user.
   reason to use this function if the poset is created and manipulated
   by the functions provided in this module.
 * `hash(P)` computes a hash value for the poset. This enables `SimplePoset`
-  objects to serve as keys in dictionaries, and so forth. 
+  objects to serve as keys in dictionaries, and so forth.
 * `element_type(P)` returns the datatype of the elements in this poset. For example:
 
   ```julia
@@ -66,7 +66,8 @@ The following functions are not likely to be called by the casual user.
 
 ## Constructors
 
-* `Antichain(n)` creates an antichain with elements `1:n`
+* `Antichain(n)` creates an antichain with elements `1:n`. The
+  function `IntPoset(n)` is a synonym.
 * `Antichain(list)` creates an antichain with elements drawn from
   `list`, a one-dimensional array.
 * `Boolean(n)` creates the subsets of an `n`-set poset in which
@@ -87,7 +88,7 @@ The following functions are not likely to be called by the casual user.
 ## Operations
 
 * `inv(P)` creates the inverse poset of `P`, i.e., we have `x<y` in
-  `P` iff we have `y<x` in `inv(P)`. We can use `P'` as a synonym for 
+  `P` iff we have `y<x` in `inv(P)`. We can use `P'` as a synonym for
   `inv(P)`.
 * `intersect(P,Q)` creates the intersection of the two posets (which
   must be of the same element type). Typically the two posets have the
@@ -178,8 +179,8 @@ The following functions are not likely to be called by the casual user.
 
 ## Linear extensions
 
-The file `linear_extensions.jl`  in the `src` folder contains functions 
-to find one or all linear extensions of a poset. This module is not loaded 
+The file `linear_extensions.jl`  in the `src` folder contains functions
+to find one or all linear extensions of a poset. This module is not loaded
 by default and so requires the command `include("linear_extensions.jl")`.
 
 **Note**: The function `all_linear_extensions` uses the `Memoize`
