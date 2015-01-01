@@ -180,7 +180,7 @@ The following functions are not likely to be called by the casual user.
 ## Linear extensions
 
 The file `linear_extensions.jl`  in the `src` folder contains functions
-to find one or all linear extensions of a poset. This module is not loaded
+to find one or all linear extensions of a poset. This file is not loaded
 by default and so requires the command `include("linear_extensions.jl")`.
 
 **Note**: The function `all_linear_extensions` uses the `Memoize`
