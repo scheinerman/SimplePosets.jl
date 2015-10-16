@@ -4,6 +4,8 @@ using SimpleGraphs
 
 import Base.show, Base.isequal, Base.hash
 import Base.inv, Base.intersect, Base.zeta
+import Base.ctranspose, Base.*, Base.+, Base./, Base.\
+import Base.==
 
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
 import SimpleGraphs.relabel
@@ -73,7 +75,7 @@ isequal(P::SimplePoset, Q::SimplePoset) = isequal(P.D,Q.D)
 ==(P::SimplePoset, Q::SimplePoset) = isequal(P,Q)
 
 # hash function for this class based on P.D
-hash(P::SimplePoset, h::Uint64 = uint64(0)) = hash(P.D,h)
+hash(P::SimplePoset, h::UInt64 = UInt64(0)) = hash(P.D,h)
 
 # return a list of the elements in P
 elements(P::SimplePoset) = vlist(P.D)
@@ -261,7 +263,7 @@ function divisors(n::Int)
 
     p = first_prime_factor(n)
     if n==p
-        return IntSet(1,p)
+        return IntSet([1,p])
     end
 
     A = divisors(div(n,p))
@@ -415,7 +417,7 @@ end
 
 # Produce the cartesian product of two posets
 function *{S,T}(P::SimplePoset{S}, Q::SimplePoset{T})
-    PQ = SimplePoset{(S,T)}()
+    PQ = SimplePoset{Tuple{S,T}}()
 
     for a in P.D.V
         for b in Q.D.V
@@ -440,7 +442,7 @@ end
 
 # Disjoint union of posets
 function +{T}(x::SimplePoset{T}...)
-    PP = SimplePoset{(T,Int)}()
+    PP = SimplePoset{Tuple{T,Int}}()
 
     for i=1:length(x)
         P = x[i]
@@ -500,11 +502,11 @@ function zeta_matrix(P::SimplePoset)
 end
 
 # Mobius function as a matrix
-mobius_matrix(P::SimplePoset) = int(inv(zeta_matrix(P)))
+mobius_matrix(P::SimplePoset) = round(Int,inv(zeta_matrix(P)))
 
 # Zeta function as a dictionary
 function zeta{T}(P::SimplePoset{T})
-    z = Dict{(T,T),Int}()
+    z = Dict{Tuple{T,T},Int}()
     els = elements(P)
     for a in els
         for b in els
@@ -520,7 +522,7 @@ end
 
 # Mobius function of this poset.
 function mobius{T}(P::SimplePoset{T})
-    mu = Dict{(T,T),Int}()
+    mu = Dict{Tuple{T,T},Int}()
     els = elements(P)
     M = mobius_matrix(P)
     n = length(els)
@@ -577,7 +579,7 @@ function relabel{S}(P::SimplePoset{S})
     verts = vlist(P.D)
     n = length(verts)
     label = Dict{S,Int}()
-    sizehint(label,n)
+    sizehint!(label,n)
 
     for idx = 1:n
         label[verts[idx]] = idx
