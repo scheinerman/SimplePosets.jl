@@ -103,8 +103,10 @@ card(P::SimplePoset) = NV(P.D)
 
 # How we print posets to the terminal
 function show(io::IO, P::SimplePoset)
-    print(io, "$(typeof(P)) ($(card(P)) elements)")
+    print(io, "SimplePoset{$(element_type(P)) ($(card(P)) elements)")
 end
+
+display(P::SimplePoset) = show(P)
 
 # Add an element to the groundset of this poset
 function add!{T}(P::SimplePoset{T}, x)
