@@ -1,5 +1,9 @@
 # Experimental functions for linear extensions
 
+"""
+`linear_extension(P)` returns a linear extension of the poset `P`.
+"""
+
 function linear_extension{T}(P::SimplePoset{T})
     result = T[]
     PP = deepcopy(P)
@@ -14,6 +18,7 @@ function linear_extension{T}(P::SimplePoset{T})
 end
 
 using Memoize
+
 
 @memoize function all_linear_extensions(P::SimplePoset)
     T = element_type(P)
@@ -41,3 +46,9 @@ using Memoize
     return result
 end
 
+
+@doc """ 
+`all_linear_extensions(P)` returns the `Set` of all linear extensions
+of `P`. This can take a very long time and eat up a lot of memory
+(which is not released).
+""" all_linear_extensions
