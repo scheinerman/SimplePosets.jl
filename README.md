@@ -5,6 +5,7 @@ pair `(X,<)` where `X` is a set of elements and `<` is a relation on
 `X` that is irreflexive, antisymmetric, and transitive.
 
 This module depends on the `SimpleGraphs` module.
+See also our `SimplePosetAlgorithms` module.
 
 ## Basic constructor
 
@@ -218,9 +219,3 @@ A `SimplePoset` is a wrapper around a `SimpleDigraph` object. The
 functions for creating and manipulating a `SimplePoset` ensure that
 the underlying digraph has directed edges `(x,y)` exactly for those
 pairs of elements with `x<y`.
-
-
-### To do list ###
-
-width, maxchain(s), maxantichain(s), chain cover, antichain cover (easier)
-
