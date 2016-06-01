@@ -606,6 +606,12 @@ end
 
 # Disjoint union of posets
 
+# This seems to fix some warnings. Can't say I understand why.
+function +()
+    nothing
+end
+
+
 """
 `P+Q` is the disjoint union of the two (or more) posets. The poset
 elements must all be of the same type.
