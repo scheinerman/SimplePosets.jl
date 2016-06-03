@@ -106,7 +106,7 @@ relations(P::SimplePoset) = elist(P.D)
 """
 `incomparables(P)` returns a list of ordered pairs `(u,v)` such that
 `u` and `v` are incomparable in `P`. Note that if `(u,v)` appears in
-the list, we do not also include `(v,u)`.  
+the list, we do not also include `(v,u)`.
 """
 function incomparables{T}(P::SimplePoset{T})
     els = elements(P)
@@ -209,7 +209,7 @@ end
 
 # Check if a particular element is in the ground set
 
-""" 
+"""
 `has(P,x)` checks if `x` is an element of the poset `P`.
 
 `has(P,x,y)` checks if `x<y` is a relation in the poset `P`.
@@ -642,7 +642,7 @@ end
 `stack(P...)` stacks its poset arguments each on top of each
 other. The first poset in the list is on the bottom.
 """
-    
+
 function stack{T}(x::SimplePoset{T}...)
     np = length(x)
     PP = +(x...)
@@ -732,7 +732,7 @@ end
 # Mobius function of this poset.
 
 """
-`mobius(P)` returns the Mobius function of the poset `P` as a `Dict`. 
+`mobius(P)` returns the Mobius function of the poset `P` as a `Dict`.
 See `zeta`.
 """
 function mobius{T}(P::SimplePoset{T})
@@ -841,6 +841,10 @@ function height(P::SimplePoset)
 
     return result
 end
+
+include("linear_extensions.jl")
+
+
 
 end # end of module SimplePosets
 

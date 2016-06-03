@@ -5,7 +5,10 @@ pair `(X,<)` where `X` is a set of elements and `<` is a relation on
 `X` that is irreflexive, antisymmetric, and transitive.
 
 This module depends on the `SimpleGraphs` module.
-See also our `SimplePosetAlgorithms` module.
+See also our `SimplePosetAlgorithms` module. The function
+`all_linear_extensions` relies on the `Memoize` package
+which can be obtained by running
+`Pkg.add("Memoize")`.
 
 ## Basic constructor
 
@@ -157,9 +160,7 @@ The following functions are not likely to be called by the casual user.
     6
    ```
 
-
 ## Poset properties
-
 
 * `ComparabilityGraph(P)` returns a `SimpleGraph` whose vertices are
   the elements of `P` and in which two distinct vertices are adjacent
@@ -180,14 +181,7 @@ The following functions are not likely to be called by the casual user.
 
 ## Linear extensions
 
-The file `linear_extensions.jl`  in the `src` folder contains functions
-to find one or all linear extensions of a poset. This file is not loaded
-by default and so requires the command `include("linear_extensions.jl")`.
-
-**Note**: The function `all_linear_extensions` uses the `Memoize`
-  module which can be installed with `Pkg.add("Memoize")`.
-
-+ `linear_extension(P)` find one linear extension of the poset (as an
++ `linear_extension(P)` finds one linear extension of the poset (as an
   `Array`).
 + `all_linear_extensions(P)` returns a `Set` containing all the linear
   extensions of the poset. This is a *very* expensive operation in
