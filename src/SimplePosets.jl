@@ -141,7 +141,7 @@ display(P::SimplePoset) = show(P)
 other elements`.
 
 
-`add(P,x,y)` adds elements `x` and `y` to the poset (if they are not
+`add!(P,x,y)` adds elements `x` and `y` to the poset (if they are not
 already present) and, more importantly, adds the relation `x<y` as
 well. This fails if adding this relation would violate transitivity.
 """
@@ -847,4 +847,3 @@ include("linear_extensions.jl")
 
 
 end # end of module SimplePosets
-
