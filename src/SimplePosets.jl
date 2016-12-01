@@ -138,8 +138,7 @@ display(P::SimplePoset) = show(P)
 # Add an element to the groundset of this poset
 """
 `add!(P,x)` adds the element `x` to the poset with no relations to any
-other elements`.
-
+other elements.
 
 `add!(P,x,y)` adds elements `x` and `y` to the poset (if they are not
 already present) and, more importantly, adds the relation `x<y` as
