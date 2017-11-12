@@ -34,9 +34,9 @@ Use `SimplePoset(T)` or `SimplePlot{T}()` to create a new poset in
 which the elements are of type `T`.
 """
 
-type SimplePoset{T}
+struct SimplePoset{T}
     D::SimpleDigraph{T}
-    function SimplePoset()
+    function SimplePoset{T}() where T
         D = SimpleDigraph{T}()
         forbid_loops!(D)
         new(D)
