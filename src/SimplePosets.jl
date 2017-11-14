@@ -1,6 +1,6 @@
 module SimplePosets
 
-using SimpleGraphs
+using SimpleGraphs, Primes
 
 import Base.show, Base.isequal, Base.hash
 import Base.inv, Base.intersect, Base.zeta
@@ -398,7 +398,7 @@ function Boolean(n::Int)
         error("Argument must be a positive integer")
     end
 
-    P = SimplePoset(ASCIIString)
+    P = SimplePoset(String)
 
     NN = (1<<n) - 1
     for e = 0:NN
@@ -704,7 +704,7 @@ end
 """
 `mobius_matrix(P)` returns the inverse of `zeta_matrix(P)`.
 """
-mobius_matrix(P::SimplePoset) = round(Int,inv(zeta_matrix(P)))
+mobius_matrix(P::SimplePoset) = round.(Int,inv(zeta_matrix(P)))
 
 # Zeta function as a dictionary
 
