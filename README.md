@@ -74,7 +74,7 @@ The following functions are not likely to be called by the casual user.
   function `IntPoset(n)` is a synonym.
 * `Antichain(list)` creates an antichain with elements drawn from
   `list`, a one-dimensional array.
-* `Boolean(n)` creates the subsets of an `n`-set poset in which
+* `BooleanLattice(n)` creates the subsets of an `n`-set poset in which
   elements are named as `n`-long binary strings.
 * `Chain(n)` creates a chain with elements `1:n` in which
   `1<2<3<...<n`.
@@ -82,6 +82,8 @@ The following functions are not likely to be called by the casual user.
   order) in.
 * `Divisors(n)` creates the poset whose elements are the divisors of
   `n` ordered by divisibility.
+* `PartitionLattice(n)` creates the poset whose elements are the partitions of
+`{1,2,...,n}` ordered by refinement.
 * `RandomPoset(n,d)` creates a random `d`-dimensional poset on `n`
   elements.
 * `StandardExample(n)` creates the canonical `n`-dimensional poset

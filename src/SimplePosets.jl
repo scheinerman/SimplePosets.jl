@@ -19,8 +19,8 @@ export relabel
 export zeta_matrix, zeta, mobius_matrix, mobius
 
 
-export Chain, Antichain, Divisors, Boolean, StandardExample
-export RandomPoset
+export Chain, Antichain, Divisors, BooleanLattice, StandardExample
+export RandomPoset, PartitionLattice
 
 export ComparabilityGraph, CoverDigraph
 
@@ -390,10 +390,10 @@ end
 # Create the Boolean lattice poset. Elements are n-long binary
 # strings.
 """
-`Boolean(n)` creates the Boolean lattice whose elements are `n`-long
+`BooleanLattice(n)` creates the Boolean lattice whose elements are `n`-long
 character strings of 0s and 1s. Ordering is coordinatewise.
 """
-function Boolean(n::Int)
+function BooleanLattice(n::Int)
     if n<1
         error("Argument must be a positive integer")
     end
@@ -840,6 +840,27 @@ function height(P::SimplePoset)
 
     return result
 end
+
+using SimplePartitions
+
+
+"""
+`PartitionLattice(n)` creates the poset whose elements are the
+partitions of the set `{1,2,...,n}` ordered by refinement.
+"""
+function PartitionLattice(n::Int)
+    X = all_partitions(n)
+    P = SimplePoset{Partition{Int}}()
+    for x in X
+        for y in X
+            if x <= y
+                add!(P,x,y)
+            end
+        end
+    end
+    return P
+end
+
 
 include("linear_extensions.jl")
 
