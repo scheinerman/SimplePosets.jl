@@ -3,8 +3,8 @@ module SimplePosets
 using SimpleGraphs, Primes
 
 import Base.show, Base.isequal, Base.hash
-import Base.inv, Base.intersect, Base.zeta
-import Base.ctranspose, Base.*, Base.+, Base./, Base.\
+import Base.inv, Base.intersect #, Base.zeta
+import Base.ctranspose, Base.*, Base.+, Base./ #, Base.\
 import Base.==
 
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
@@ -33,7 +33,6 @@ the elements can be of `Any` type.
 Use `SimplePoset(T)` or `SimplePlot{T}()` to create a new poset in
 which the elements are of type `T`.
 """
-
 struct SimplePoset{T}
     D::SimpleDigraph{T}
     function SimplePoset{T}() where T
@@ -79,7 +78,7 @@ end
 """
 `element_type(P)` returns the type of elements in this `SimplePoset`.
 """
-element_type{T}(P::SimplePoset{T}) = T
+element_type(P::SimplePoset{T}) where T = T
 
 # Check if two posets are the same
 isequal(P::SimplePoset, Q::SimplePoset) = isequal(P.D,Q.D)
@@ -108,7 +107,7 @@ relations(P::SimplePoset) = elist(P.D)
 `u` and `v` are incomparable in `P`. Note that if `(u,v)` appears in
 the list, we do not also include `(v,u)`.
 """
-function incomparables{T}(P::SimplePoset{T})
+function incomparables(P::SimplePoset{T}) where T
     els = elements(P)
     n   = length(els)
 
@@ -144,12 +143,12 @@ other elements.
 already present) and, more importantly, adds the relation `x<y` as
 well. This fails if adding this relation would violate transitivity.
 """
-function add!{T}(P::SimplePoset{T}, x)
+function add!(P::SimplePoset{T}, x) where T
     return add!(P.D, x)
 end
 
 # Add x<y as a relation in this poset
-function add!{T}(P::SimplePoset{T}, x, y)
+function add!(P::SimplePoset{T}, x, y) where T
     # start with some basic checks
     if !has(P,x)
         add!(P,x)
@@ -213,10 +212,10 @@ end
 
 `has(P,x,y)` checks if `x<y` is a relation in the poset `P`.
 """
-has{T}(P::SimplePoset{T}, x) = has(P.D, x)
+has(P::SimplePoset{T}, x)  where T = has(P.D, x)
 
 # Check if x<y holds in this poset
-has{T}(P::SimplePoset{T}, x, y) = has(P.D, x, y)
+has(P::SimplePoset{T}, x, y) where T = has(P.D, x, y)
 
 # return a list of all elements > x
 
@@ -235,7 +234,6 @@ end
 `below(P,x)` returns a list of all elements `y` in the poset `P` for
 which `y<x`.
 """
-# return a list of all elements < x
 function below(P::SimplePoset, x)
     if !has(P,x)
         error("This poset does not contain ", x)
@@ -281,7 +279,7 @@ elements `1:n` but no relations.
 IntPoset(n::Int) = Antichain(n)
 
 # Construction an antichain from a list of elements
-function Antichain{T}(els::Array{T,1})
+function Antichain(els::Array{T,1}) where T
     P = SimplePoset(T)
     for e in els
         add!(P,e)
@@ -311,7 +309,7 @@ function Chain(n::Int)
 end
 
 # Construct a chain given a list of elements
-function Chain{T}(els::Array{T,1})
+function Chain(els::Array{T,1}) where T
     P = Antichain(els)
     n = length(els)
     for k=1:n-1
@@ -535,7 +533,7 @@ relation of `P` iff `(v,u)` is a relation of `inv(P)`.
 
 Use `P'` as a shortcut for `inv(P)`.
 """
-function inv{T}(P::SimplePoset{T})
+function inv(P::SimplePoset{T}) where T
     Q = SimplePoset(T)
     for e in P.D.V
         add!(Q,e)
@@ -548,7 +546,7 @@ function inv{T}(P::SimplePoset{T})
 end
 
 # We can use P' to mean inv(P) also
-ctranspose(P::SimplePoset) = inv(P)
+adjoint(P::SimplePoset) = inv(P)
 
 # Create the intersection of two posets (must be of same element
 # type). Ideally, the two posets have the same set of elements, but
@@ -560,7 +558,7 @@ ctranspose(P::SimplePoset) = inv(P)
 the two given posets (which must contain elements of the same
 datatype).
 """
-function intersect{T}(P::SimplePoset{T}, Q::SimplePoset{T})
+function intersect(P::SimplePoset{T}, Q::SimplePoset{T}) where T
     R = SimplePoset(T)
     elist = filter(x -> has(P,x), elements(Q))
     for e in elist
@@ -579,7 +577,7 @@ end
 `P*Q` is the Cartesian product of the two posets. The elements need
 not be of the same type.
 """
-function *{S,T}(P::SimplePoset{S}, Q::SimplePoset{T})
+function (*)(P::SimplePoset{S}, Q::SimplePoset{T}) where {S,T}
     PQ = SimplePoset{Tuple{S,T}}()
 
     for a in P.D.V
@@ -615,7 +613,7 @@ end
 `P+Q` is the disjoint union of the two (or more) posets. The poset
 elements must all be of the same type.
 """
-function +{T}(x::SimplePoset{T}...)
+function (+)(x::SimplePoset{T}...) where T
     PP = SimplePoset{Tuple{T,Int}}()
 
     for i=1:length(x)
@@ -641,8 +639,7 @@ end
 `stack(P...)` stacks its poset arguments each on top of each
 other. The first poset in the list is on the bottom.
 """
-
-function stack{T}(x::SimplePoset{T}...)
+function stack(x::SimplePoset{T}...) where T
     np = length(x)
     PP = +(x...)
 
@@ -666,14 +663,14 @@ end
 """
 `P/Q` stacks poset `P` on top of poset `Q`.
 """
-/{T}(P::SimplePoset{T}, Q::SimplePoset{T}) = stack(Q,P)
-
-"""
-`P\Q` stacks poset `P` under poset `Q`.
-"""
-\{T}(P::SimplePoset{T}, Q::SimplePoset{T}) = stack(P,Q)
-
-# Zeta function as a matrix
+(/)(P::SimplePoset{T}, Q::SimplePoset{T}) where T = stack(Q,P)
+#
+# """
+# `P\Q` stacks poset `P` under poset `Q`.
+# """
+# (\){T}(P::SimplePoset{T}, Q::SimplePoset{T}) = stack(P,Q)
+#
+# # Zeta function as a matrix
 
 """
 `zeta_matrix(P)` creates the zeta matrix of a poset `P`. The
@@ -713,7 +710,7 @@ mobius_matrix(P::SimplePoset) = round.(Int,inv(zeta_matrix(P)))
 then `d[u,v]==1` when `u` and `v` are elements of the poset for which
 `u==v` or `(u,v)` is a relation of `P`.
 """
-function zeta{T}(P::SimplePoset{T})
+function zeta(P::SimplePoset{T}) where T
     z = Dict{Tuple{T,T},Int}()
     els = elements(P)
     for a in els
@@ -734,7 +731,7 @@ end
 `mobius(P)` returns the Mobius function of the poset `P` as a `Dict`.
 See `zeta`.
 """
-function mobius{T}(P::SimplePoset{T})
+function mobius(P::SimplePoset{T}) where T
     mu = Dict{Tuple{T,T},Int}()
     els = elements(P)
     M = mobius_matrix(P)
@@ -768,7 +765,7 @@ are the elements of `P` and in which we have the edge `(u,v)`
 provided: (a) `u<v` is a relation of `P` and (b) there is no `w` in
 `P` with `u<w<v`.
 """
-function CoverDigraph{T}(P::SimplePoset{T})
+function CoverDigraph(P::SimplePoset{T}) where T
     CD = SimpleDigraph{T}()
     for v in P.D.V
         add!(CD,v)
@@ -801,14 +798,14 @@ relabeled using the values `1:n` (where `n=card(P)`).
 
 `relabel(P,d)` relabels elements according to the dictionary `d`.
 """
-function relabel{S,T}(P::SimplePoset{S}, label::Dict{S,T})
+function relabel(P::SimplePoset{S}, label::Dict{S,T}) where {S,T}
     Q = SimplePoset{T}()
     Q.D = relabel(P.D, label)
     return Q
 end
 
 # Relabel the elements with the integers 1:n
-function relabel{S}(P::SimplePoset{S})
+function relabel(P::SimplePoset{S}) where S
     verts = vlist(P.D)
     n = length(verts)
     label = Dict{S,Int}()

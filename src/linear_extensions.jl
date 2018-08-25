@@ -9,7 +9,7 @@ export linear_extension, all_linear_extensions
 """
 `linear_extension(P)` returns a linear extension of the poset `P`.
 """
-function linear_extension{T}(P::SimplePoset{T})
+function linear_extension(P::SimplePoset{T}) where T
     result = T[]
     PP = deepcopy(P)
     while card(PP)>0
@@ -49,8 +49,6 @@ end
 
     return result
 end
-
-
 @doc """
 `all_linear_extensions(P)` returns the `Set` of all linear extensions
 of `P`. This can take a very long time and eat up a lot of memory
