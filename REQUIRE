@@ -2,4 +2,3 @@ julia 0.7
 Primes
 SimpleGraphs
 SimplePartitions
-Memoize
