@@ -4,7 +4,7 @@ using SimpleGraphs, Primes
 
 import Base.show, Base.isequal, Base.hash
 import Base.inv, Base.intersect #, Base.zeta
-import Base.ctranspose, Base.*, Base.+, Base./ #, Base.\
+import Base.adjoint, Base.*, Base.+, Base./ #, Base.\
 import Base.==
 
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
@@ -33,7 +33,7 @@ the elements can be of `Any` type.
 Use `SimplePoset(T)` or `SimplePlot{T}()` to create a new poset in
 which the elements are of type `T`.
 """
-struct SimplePoset{T}
+mutable struct SimplePoset{T}
     D::SimpleDigraph{T}
     function SimplePoset{T}() where T
         D = SimpleDigraph{T}()
@@ -339,12 +339,12 @@ function divisors(n::Int)
     end
 
     if n==1
-        return IntSet(1)
+        return BitSet(1)
     end
 
     p = first_prime_factor(n)
     if n==p
-        return IntSet([1,p])
+        return BitSet([1,p])
     end
 
     A = divisors(div(n,p))
@@ -352,7 +352,7 @@ function divisors(n::Int)
 
     Blist = [ p*x for x in Alist ]
 
-    B = IntSet(Blist)
+    B = BitSet(Blist)
 
     return union(A,B)
 end
@@ -400,13 +400,15 @@ function BooleanLattice(n::Int)
 
     NN = (1<<n) - 1
     for e = 0:NN
-        add!(P,bin(e,n))
+        # add!(P,bin(e,n))
+        add!(P,string(e,base=2,pad=n))
     end
 
     for e = 0:NN
         for f=0:NN
             if e!=f && e|f == f
-                add!(P.D,bin(e,n), bin(f,n))
+                # add!(P.D,bin(e,n), bin(f,n))
+                add!(P.D,string(e,base=2,pad=n),string(f,base=2,pad=n))
             end
         end
     end
