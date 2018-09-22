@@ -1,10 +1,16 @@
 # SimplePosets
 
+[![Build Status](https://travis-ci.org/scheinerman/SimplePosets.jl.svg?branch=master)](https://travis-ci.org/scheinerman/SimplePosets.jl)
+
+
+[![codecov.io](http://codecov.io/github/scheinerman/SimplePosets.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/SimplePosets.jl?branch=master)
+
+
 This module defines a `SimplePoset` type for Julia. A *poset* is a
 pair `(X,<)` where `X` is a set of elements and `<` is a relation on
 `X` that is irreflexive, antisymmetric, and transitive.
 
-This module depends on the `SimpleGraphs` module.
+This module depends on the `SimplePosets` module.
 See also our `SimplePosetAlgorithms` module. The function
 `all_linear_extensions` relies on the `Memoize` package
 which can be obtained by running
