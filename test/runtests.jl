@@ -34,3 +34,7 @@ P = RandomPoset(10,2)
 
 P = Divisors(2*3*5)
 @test elements(relabel(P)) == collect(1:8)
+@test length(random_linear_extension(P)) == 8
+
+d = random_average_height(P,20)
+@test d[1]==0.0

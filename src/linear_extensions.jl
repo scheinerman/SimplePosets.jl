@@ -1,6 +1,6 @@
 # Experimental functions for linear extensions
 
-export linear_extension, all_linear_extensions
+export linear_extension, all_linear_extensions, random_linear_extension
 
 
 """
@@ -20,6 +20,28 @@ function linear_extension(P::SimplePoset{T}) where T
 end
 
 
+"""
+`random_linear_extension(P)` generates a linear extension of `P`
+at random. This is slower than `linear_extension(P)` if one just
+wants some linear extension.
+
+Note that linear extensions are not generated uniformly
+at random by this function. Rather we proceed recursively: A
+minimal element `x` of `P` is chosen uniformly at random from among
+all minimal elements, and that becomes the first (lowest) element in
+the linear extension. Then `x` is deleted and the same process is
+repeated until all elements have been processed.
+"""
+function random_linear_extension(P::SimplePoset{T}) where T
+    result = T[]
+    PP = deepcopy(P)
+    while card(PP) > 0
+        x = rand(minimals(PP))  # choose a min el't at random
+        append!(result,x)
+        delete!(PP,x)
+    end
+    return result
+end
 
 _LX_table = Dict{SimplePoset, Set}()
 export clear_LX_table

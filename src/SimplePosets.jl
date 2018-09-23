@@ -217,7 +217,7 @@ has(P::SimplePoset{T}, x)  where T = has(P.D, x)
 # Check if x<y holds in this poset
 has(P::SimplePoset{T}, x, y) where T = has(P.D, x, y)
 
-# return a list of all elements > x
+# return a list of all elements > xe
 
 """
 `above(P,x)` returns a list of all elements `y` in the poset `P` for
@@ -862,7 +862,7 @@ end
 
 
 include("linear_extensions.jl")
-
+include("average_height.jl")
 
 
 end # end of module SimplePosets

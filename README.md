@@ -191,26 +191,32 @@ The following functions are not likely to be called by the casual user.
 
 + `linear_extension(P)` finds one linear extension of the poset (as an
   `Array`).
++ `random_linear_extension(P)` returns a random linear extension. See the
+   help message for more detail.
 + `all_linear_extensions(P)` returns a `Set` containing all the linear
   extensions of the poset. This is a *very* expensive operation in
   both time and memory. It is memoized to make it more efficient, but
   the memory it uses is *not* freed after use.
 
-  ```julia
-  julia> P = Divisors(12)
-  SimplePoset{Int64} (6 elements)
+```julia
+julia> P = Divisors(12)
+SimplePoset{Int64} (6 elements)
 
-  julia> linear_extension(P)'
-  1x6 Array{Int64,2}:
-   1  2  3  4  6  12
+julia> linear_extension(P)'
+1×6 LinearAlgebra.Adjoint{Int64,Array{Int64,1}}:
+ 1  2  3  4  6  12
 
-  julia> collect(all_linear_extensions(P))
-  5-element Array{Array{Int64,1},1}:
-   [1,2,3,4,6,12]
-   [1,2,3,6,4,12]
-   [1,3,2,6,4,12]
-   [1,2,4,3,6,12]
-   [1,3,2,4,6,12]
+julia> random_linear_extension(P)'
+1×6 LinearAlgebra.Adjoint{Int64,Array{Int64,1}}:
+ 1  3  2  6  4  12
+
+julia> collect(all_linear_extensions(P))
+5-element Array{Array{Int64,1},1}:
+ [1, 3, 2, 4, 6, 12]
+ [1, 3, 2, 6, 4, 12]
+ [1, 2, 3, 6, 4, 12]
+ [1, 2, 3, 4, 6, 12]
+ [1, 2, 4, 3, 6, 12]
   ```
 
 ## Miscellaneous
