@@ -10,11 +10,6 @@ This module defines a `SimplePoset` type for Julia. A *poset* is a
 pair `(X,<)` where `X` is a set of elements and `<` is a relation on
 `X` that is irreflexive, antisymmetric, and transitive.
 
-This module depends on the `SimplePosets` module.
-See also our `SimplePosetAlgorithms` module. The function
-`all_linear_extensions` relies on the `Memoize` package
-which can be obtained by running
-`Pkg.add("Memoize")`.
 
 ## Basic constructor
 
@@ -134,8 +129,7 @@ The following functions are not likely to be called by the casual user.
 
 * `stack(Plist...)` creates a new poset from the ones in the argument
   list by stacking one atop the next. The first poset in the list is
-  at the bottom. We provide two operator versions of this: `P/Q`
-  stacks `P` over `Q` and `P\Q` stacks `Q` over `P`. Element labeling
+  at the bottom.  Element labeling
   is as in `+`.
 * `relabel(P,labels)` is used to create a new poset in which the elements
    have new names (as given by the dictionary `labels`). Calling
