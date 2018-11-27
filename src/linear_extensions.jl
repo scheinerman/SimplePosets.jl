@@ -37,7 +37,7 @@ function random_linear_extension(P::SimplePoset{T}) where T
     PP = deepcopy(P)
     while card(PP) > 0
         x = rand(minimals(PP))  # choose a min el't at random
-        append!(result,x)
+        push!(result,x)
         delete!(PP,x)
     end
     return result
