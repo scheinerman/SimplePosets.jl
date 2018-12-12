@@ -48,7 +48,7 @@ document `addition-deletion.pdf` found in the `doc` folder.
 * `below(P,x)` returns a list of all elements below `x` in `P`.
 * `interval(P,x,y)` returns a list of all elements `z` that satisfy
   `x<z<y`.
-* `maximals(P)` returns a list of the minimal elements of `P`.
+* `maximals(P)` returns a list of the maximal elements of `P`.
 * `minimals(P)` returns a list of the minimal elements of `P`.
 
 
