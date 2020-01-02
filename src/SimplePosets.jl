@@ -24,7 +24,7 @@ export RandomPoset, PartitionLattice
 
 export ComparabilityGraph, CoverDigraph
 
-export inv, intersect, stack, height
+export inv, intersect, stack, height, induce
 
 """
 `SimplePoset()` creates a new partially ordered set (poset) in which
@@ -858,6 +858,37 @@ function PartitionLattice(n::Int)
         end
     end
     return P
+end
+
+
+
+
+import SimpleGraphs.induce
+export induce
+
+
+"""
+`induce(P::SimplePoset, A::Set)` creates the induced subposet of `P`
+using the elements of `A`.
+"""
+function induce(P::SimplePoset{T}, A::Set) where T
+    for v in A
+        @assert has(P,v) "The set $A is not a subsets of the ground set"
+    end
+    Q = SimplePoset{T}()
+    for v in A
+        add!(Q,v)
+    end
+
+    for a in A
+        for b in A
+            if has(P,a,b)
+                add!(Q,a,b)
+            end
+        end
+    end
+
+    return Q
 end
 
 

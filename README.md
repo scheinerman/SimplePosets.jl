@@ -95,20 +95,21 @@ The following functions are not likely to be called by the casual user.
 ## Operations
 
 * `inv(P)` creates the inverse poset of `P`, i.e., we have `x<y` in
-  `P` iff we have `y<x` in `inv(P)`. We can use `P'` as a synonym for
-  `inv(P)`.
+`P` iff we have `y<x` in `inv(P)`. We can use `P'` as a synonym for
+`inv(P)`.
 * `intersect(P,Q)` creates the intersection of the two posets (which
-  must be of the same element type). Typically the two posets have the
-  same elements, but this is not necessary. The resulting poset's
-  elements is the intersection of the two element sets, and relations
-  in the result are those relations common to both `P` and `Q`.
-* `P*Q` is the Cartesian product of the two posets (that may be of
-  different types).
+must be of the same element type). Typically the two posets have the
+same elements, but this is not necessary. The resulting poset's
+elements is the intersection of the two element sets, and relations
+in the result are those relations common to both `P` and `Q`.
+* `induce(P,A)` forms the induced subposet of `P` using the elements
+in the set `A`.
+* `P*Q` is the Cartesian product of the two posets (that may be of different types).
 * `P+Q` is the disjoint union of two (or more) posets. The posets must
-  all be of the same type. Each summand's elements is extended with an
-  integer (starting at 1) corresponding to its position in the
-  sum. That is, if `x` is an element of summand number `i`, then in
-  the sum it becomes the element `(x,i)`. For example:
+all be of the same type. Each summand's elements is extended with an
+integer (starting at 1) corresponding to its position in the
+sum. That is, if `x` is an element of summand number `i`, then in
+the sum it becomes the element `(x,i)`. For example:
 
   ```julia
   julia> P = Chain(2)+Chain(3)+Chain(4)

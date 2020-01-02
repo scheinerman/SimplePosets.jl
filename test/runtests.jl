@@ -36,5 +36,9 @@ P = Divisors(2*3*5)
 @test elements(relabel(P)) == collect(1:8)
 @test length(random_linear_extension(P)) == 8
 
+A = Set(elements(P))
+Q = induce(P,A)
+@test P==Q
+
 d = random_average_height(P,20)
 @test d[1]==0.0
