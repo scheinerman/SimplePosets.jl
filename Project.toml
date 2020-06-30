@@ -1,5 +1,6 @@
 name = "SimplePosets"
 uuid = "b2aef97b-4721-5af9-b440-0bad754dc5ba"
+version = "0.1.0"
 
 [deps]
 FlexLinearAlgebra = "b67e1e5a-d13e-5892-ad81-fb75f5903773"
@@ -9,6 +10,10 @@ SimplePartitions = "ec83eff0-a5b5-5643-ae32-5cbf6eedec9d"
 
 [compat]
 julia = "1"
+FlexLinearAlgebra = "0"
+Primes = "0"
+SimpleGraphs = "0"
+SimplePartitions = "0"
 
 [extras]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
