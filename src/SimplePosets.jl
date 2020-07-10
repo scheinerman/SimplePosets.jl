@@ -68,7 +68,7 @@ function check(P::SimplePoset)
 
     # transitive closure check
     Z = zeta_matrix(P)
-    if countnz(Z) != countnz(Z*Z)
+    if count(iszero,Z) != count(iszero,Z*Z)
         warn("Not transitively closed")
         return false
     end
