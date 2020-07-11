@@ -21,6 +21,7 @@ P = PartitionLattice(5)
 @test inv(P') == P
 
 P = Divisors(2*3*5)
+@test check(P)
 M = mobius_matrix(P)
 Z = zeta_matrix(P)
 n = card(P)
