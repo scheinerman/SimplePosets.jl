@@ -1,14 +1,23 @@
 # Experimental functions for linear extensions
 
-export linear_extension, all_linear_extensions, random_linear_extension
+export linear_extension, linear_extension_empty!, all_linear_extensions, random_linear_extension
 
 
 """
 `linear_extension(P)` returns a linear extension of the poset `P`.
 """
 function linear_extension(P::SimplePoset{T}) where T
-    result = T[]
     PP = deepcopy(P)
+    result = linear_extension_empty!(PP)
+    return result
+end
+
+"""
+`linear_extension_empty!(P)` returns a linear extension of the poset `P`,
+but also empties the poset `P`. This is a destructive operation.
+"""
+function linear_extension_empty!(PP::SimplePoset{T}) where T
+    result = T[]
     while card(PP)>0
         M = minimals(PP)
         append!(result, M)
