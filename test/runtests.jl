@@ -28,7 +28,7 @@ n = card(P)
 @test M*Z == Matrix{Int}(I,n,n)
 
 P = BooleanLattice(3)
-@test element_type(P) == String
+@test eltype(P) == String
 
 P = RandomPoset(10,2)
 @test card(P) == 10

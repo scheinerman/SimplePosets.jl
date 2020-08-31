@@ -60,13 +60,13 @@ The following functions are not likely to be called by the casual user.
   by the functions provided in this module.
 * `hash(P)` computes a hash value for the poset. This enables `SimplePoset`
   objects to serve as keys in dictionaries, and so forth.
-* `element_type(P)` returns the datatype of the elements in this poset. For example:
+* `eltype(P)` returns the datatype of the elements in this poset. For example:
 
   ```julia
-  julia> P = Boolean(3);
+  julia> P = BooleanLattice(3);
 
-  julia> element_type(P)
-  ASCIIString (constructor with 2 methods)
+  julia> eltype(P)
+  SimplePoset{String} (8 elements)
   ```
 
 ## Constructors

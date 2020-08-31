@@ -76,7 +76,7 @@ function all_linear_extensions(P::SimplePoset)::Set
         return _LX_table[P]
     end
 
-    T = element_type(P)
+    T = eltype(P)
     result::Set = Set{Array{T,1}}()
     if card(P) == 0
         return result

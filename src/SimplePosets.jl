@@ -5,12 +5,12 @@ using SimpleGraphs, Primes
 import Base.show, Base.isequal, Base.hash
 import Base.inv, Base.intersect #, Base.zeta
 import Base.adjoint, Base.*, Base.+, Base./ #, Base.\
-import Base.==
+import Base.==, Base.eltype
 
 import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
 import SimpleGraphs.relabel
 
-export SimplePoset, IntPoset, check, hash, element_type
+export SimplePoset, IntPoset, check, hash, eltype
 export elements, relations, incomparables
 export card, show, add!, has, delete!
 export above, below, interval
@@ -76,9 +76,12 @@ function check(P::SimplePoset)
 end
 
 """
-`element_type(P)` returns the type of elements in this `SimplePoset`.
+`eltype(P::SimplePoset)` returns the type of elements in this `SimplePoset`.
 """
-element_type(P::SimplePoset{T}) where T = T
+eltype(P::SimplePoset{T}) where T = T
+
+@deprecate element_type eltype
+
 
 # Check if two posets are the same
 isequal(P::SimplePoset, Q::SimplePoset) = isequal(P.D,Q.D)
@@ -129,7 +132,7 @@ card(P::SimplePoset) = NV(P.D)
 
 # How we print posets to the terminal
 function show(io::IO, P::SimplePoset)
-    print(io, "SimplePoset{$(element_type(P))} ($(card(P)) elements)")
+    print(io, "SimplePoset{$(eltype(P))} ($(card(P)) elements)")
 end
 
 display(P::SimplePoset) = show(P)
