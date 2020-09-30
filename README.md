@@ -3,7 +3,6 @@
 [![Build Status](https://travis-ci.com/scheinerman/SimplePosets.jl.svg?branch=master)](https://travis-ci.com/scheinerman/SimplePosets.jl)
 
 
-[![codecov.io](http://codecov.io/github/scheinerman/SimplePosets.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/SimplePosets.jl?branch=master)
 
 
 This module defines a `SimplePoset` type for Julia. A *poset* is a
