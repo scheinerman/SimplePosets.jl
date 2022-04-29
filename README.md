@@ -86,6 +86,7 @@ The following functions are not likely to be called by the casual user.
 `{1,2,...,n}` ordered by refinement.
 * `RandomPoset(n,d)` creates a random `d`-dimensional poset on `n`
   elements.
+* `SimplePoset(G::SimpleGraph)` creates the vertex-edge poset of `G`. 
 * `StandardExample(n)` creates the canonical `n`-dimensional poset
   with `2n` elements in two layers. The lower layer elements are named
   from `-1` to `-n` and the upper layer from `1` to `n`. We have

@@ -46,6 +46,31 @@ end
 # Create a new poset whose elements have a specific type (default Any)
 SimplePoset(T::DataType=Any) = SimplePoset{T}()
 
+
+
+"""
+    SimplePoset(G::SimpleGraph)
+Create a poset `P` whose elements are the vertices and edges of `G`.
+The relations in `P` are of the form `v < e` exactly when `v` is and
+end point of `e`.
+"""
+function SimplePoset(G::SimpleGraph{T}) where T
+    TT = Union{T, Tuple{T,T}}
+    P = SimplePoset{TT}()
+
+    for v ∈ G.V 
+        add!(P,v)
+    end
+
+    for e ∈ G.E
+        u,v = e
+        add!(P,u,e)
+        add!(P,v,e)
+    end
+    return P
+end
+
+
 # Validation check. This should not be necessary to ever use if the
 # poset was properly built.
 function check(P::SimplePoset)
