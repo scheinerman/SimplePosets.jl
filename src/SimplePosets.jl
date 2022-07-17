@@ -49,12 +49,12 @@ SimplePoset(T::DataType=Any) = SimplePoset{T}()
 
 
 """
-    SimplePoset(G::SimpleGraph)
+    SimplePoset(G::UG)
 Create a poset `P` whose elements are the vertices and edges of `G`.
 The relations in `P` are of the form `v < e` exactly when `v` is and
 end point of `e`.
 """
-function SimplePoset(G::SimpleGraph{T}) where T
+function SimplePoset(G::UG{T}) where T
     TT = Union{T, Tuple{T,T}}
     P = SimplePoset{TT}()
 
