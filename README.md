@@ -217,7 +217,7 @@ julia> collect(all_linear_extensions(P))
 
 ### Under the hood ###
 
-A `SimplePoset` is a wrapper around a `SimpleDigraph` object. The
+A `SimplePoset` is a wrapper around a `DirectedGraph` object. The
 functions for creating and manipulating a `SimplePoset` ensure that
 the underlying digraph has directed edges `(x,y)` exactly for those
 pairs of elements with `x<y`.

@@ -34,9 +34,9 @@ Use `SimplePoset(T)` or `SimplePlot{T}()` to create a new poset in
 which the elements are of type `T`.
 """
 mutable struct SimplePoset{T}
-    D::SimpleDigraph{T}
+    D::DG{T}
     function SimplePoset{T}() where T
-        D = SimpleDigraph{T}()
+        D = DG{T}()
         forbid_loops!(D)
         new(D)
     end
@@ -796,7 +796,7 @@ provided: (a) `u<v` is a relation of `P` and (b) there is no `w` in
 `P` with `u<w<v`.
 """
 function CoverDigraph(P::SimplePoset{T}) where T
-    CD = SimpleDigraph{T}()
+    CD = DG{T}()
     for v in P.D.V
         add!(CD,v)
     end
