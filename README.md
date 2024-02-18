@@ -1,6 +1,6 @@
 # SimplePosets
 
-> Breaking change in 0.2.0: The function `stack` is replaced by `vcat`. 
+**Breaking change in 0.2.0**: The function `stack` is replaced by `vcat`. 
 
 <hr>
 
