@@ -1,8 +1,8 @@
 # SimplePosets
 
+> Breaking change in 0.2.0: The function `stack` is replaced by `vcat`. 
 
-
-
+<hr>
 
 This module defines a `SimplePoset` type for Julia. A *poset* is a
 pair `(X,<)` where `X` is a set of elements and `<` is a relation on
@@ -60,7 +60,7 @@ The following functions are not likely to be called by the casual user.
   objects to serve as keys in dictionaries, and so forth.
 * `eltype(P)` returns the datatype of the elements in this poset. For example:
 
-  ```julia
+  ```
   julia> P = BooleanLattice(3);
 
   julia> eltype(P)
@@ -104,7 +104,7 @@ in the result are those relations common to both `P` and `Q`.
 * `induce(P,A)` forms the induced subposet of `P` using the elements
 in the set `A`.
 * `P*Q` is the Cartesian product of the two posets (that may be of different types).
-* `P+Q` is the disjoint union of two (or more) posets. The posets must
+* `P+Q` (or `hcat(P,Q)`)is the disjoint union of two (or more) posets. The posets must
 all be of the same type. Each summand's elements is extended with an
 integer (starting at 1) corresponding to its position in the
 sum. That is, if `x` is an element of summand number `i`, then in
@@ -127,16 +127,16 @@ the sum it becomes the element `(x,i)`. For example:
    (4,3)
   ```
 
-* `stack(Plist...)` creates a new poset from the ones in the argument
+* `vcat(Plist...)` creates a new poset from the ones in the argument
   list by stacking one atop the next. The first poset in the list is
-  at the bottom.  Element labeling
-  is as in `+`.
+  at the bottom.  Element labeling is as in `+`. Note that `P/Q` is 
+  equivalent to `vcat(Q,P)` and `P\Q` is equivalent to `vcat(P,Q)`.
 * `relabel(P,labels)` is used to create a new poset in which the elements
    have new names (as given by the dictionary `labels`). Calling
    `relabel(P)` gives a new poset in which the new element names are
    the integers `1` through `n`. Here's an example:
 
-   ```julia
+   ```
    julia> P = Chain(3) + Chain(3)
    SimplePoset{(Int64,Int64)} (6 elements)
 
@@ -192,7 +192,7 @@ the sum it becomes the element `(x,i)`. For example:
   both time and memory. It is memoized to make it more efficient, but
   the memory it uses is *not* freed after use.
 
-```julia
+```
 julia> P = Divisors(12)
 SimplePoset{Int64} (6 elements)
 
