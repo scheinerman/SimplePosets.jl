@@ -632,9 +632,9 @@ end
 # Disjoint union of posets
 
 # This seems to fix some warnings. Can't say I understand why.
-function +()
-    nothing
-end
+# function +()
+#     nothing
+# end
 
 
 """
@@ -643,26 +643,37 @@ end
 Returns the disjoint union of the two (or more) posets. The poset
 elements must all be of the same type.
 """
-function hcat(x::SimplePoset{T}...) where {T}
-    PP = SimplePoset{Tuple{T,Int}}()
-
-    for i = 1:length(x)
-        P = x[i]
-        for e in P.D.V
-            add!(PP, (e, i))
-        end
-
-        for r in relations(P)
-            a = r[1]
-            b = r[2]
-            add!(PP.D, (a, i), (b, i))
-        end
-    end
-
-    return PP
+function hcat(x::SimplePoset...)
+    return sum(x)
 end
 
-(+)(x::SimplePoset{T}...) where {T} = hcat(x...)
+
+function (+)(P::SimplePoset, Q::SimplePoset)::SimplePoset{Int}
+    PP = relabel(P)
+    QQ = relabel(Q)
+
+    T = Tuple{Int,Int}
+    R = SimplePoset{T}()
+
+    for x in elements(PP)
+        add!(R, (x, 1))
+    end
+    for r in relations(PP)
+        a, b = r
+        add!(R.D, (a, 1), (b, 1))
+    end
+
+    for x in elements(QQ)
+        add!(R, (x, 2))
+    end
+    for r in relations(QQ)
+        a, b = r
+        add!(R.D, (a, 2), (b, 2))
+    end
+    return relabel(R)
+end
+
+
 
 
 
@@ -675,40 +686,65 @@ end
 Stacks its poset arguments each on top of each
 other. The first poset in the list is on the bottom.
 """
-function vcat(x::SimplePoset{T}...) where {T}
-    np = length(x)
-    PP = +(x...)
-
-    for i = 1:np-1
-        P = x[i]
-        for j = i+1:np
-            Q = x[j]
-            for a in P.D.V
-                for b in Q.D.V
-                    add!(PP.D, (a, i), (b, j))
-                end
-            end
-        end
+function vcat(x::SimplePoset...)
+    Plist = collect(x)
+    np = length(Plist)
+    R = first(Plist)
+    for j = 2:np
+        R = R \ Plist[j]
     end
-    return PP
+    return R
 end
 
-# Binary operator version of stack P/Q puts P on top while P\Q puts Q
-# on top.
+
 
 """
     (/)(P::SimplePoset{T}, Q::SimplePoset{T}) where {T}
 
-`P / Q` stacks poset `P` on top of poset `Q`; equivalent to `vcat(Q,P)`.
+`P / Q` stacks poset `P` on top of poset `Q`.
 """
-(/)(P::SimplePoset{T}, Q::SimplePoset{T}) where {T} = vcat(Q, P)
+function (/)(P::SimplePoset, Q::SimplePoset)
+    PP = relabel(P)
+    QQ = relabel(Q)
+
+    T = Tuple{Int,Int}
+    R = SimplePoset{T}()
+
+    for x in elements(PP)
+        add!(R, (x, 1))
+    end
+    for r in relations(PP)
+        a, b = r
+        add!(R.D, (a, 1), (b, 1))
+    end
+
+    for x in elements(QQ)
+        add!(R, (x, 2))
+    end
+    for r in relations(QQ)
+        a, b = r
+        add!(R.D, (a, 2), (b, 2))
+    end
+
+    for x in elements(PP)
+        for y in elements(QQ)
+            a = (x, 1)
+            b = (y, 2)
+            add!(R.D, b, a)
+        end
+    end
+    return relabel(R)
+
+end
+
 
 """
-    (\\)(P::SimplePoset{T}, Q::SimplePoset{T}) where {T}
+    (\\)(P::SimplePoset, Q::SimplePoset)
 
-`P \\ Q` stacks `Q` under `P`; equivalent to `vcat(P,Q)`
+`P \\ Q` stacks `Q` over `P`
 """
-(\)(P::SimplePoset{T}, Q::SimplePoset{T}) where {T} = vcat(P, Q)
+(\)(P::SimplePoset, Q::SimplePoset) = Q / P
+
 
 
 
