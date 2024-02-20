@@ -24,7 +24,7 @@ export RandomPoset, PartitionLattice
 
 export ComparabilityGraph, CoverDigraph
 
-export inv, intersect, height, induce
+export inv, intersect, height, induce, components
 
 """
 `SimplePoset()` creates a new partially ordered set (poset) in which
