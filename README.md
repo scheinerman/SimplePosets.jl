@@ -65,7 +65,7 @@ The following functions are not likely to be called by the casual user.
   julia> P = BooleanLattice(3);
 
   julia> eltype(P)
- String
+  String
   ```
 
 ## Constructors
