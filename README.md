@@ -180,6 +180,7 @@ the sum it becomes the element `(x,i)`. For example:
 * `zeta_matrix(P)` produces the zeta matrix. Order of elements is the
   same as produced by `elements(P)`.
 * `height(P)` returns the maximum size of a chain.
+* `components(P)` returns the ground sets of the connected components of `P` as a `Partition`.
 
 ## Linear extensions
 

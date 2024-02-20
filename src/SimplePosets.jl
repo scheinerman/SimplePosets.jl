@@ -1,14 +1,14 @@
 module SimplePosets
 
 using SimpleGraphs, Primes
+using SimplePartitions
 
 import Base.show, Base.isequal, Base.hash
 import Base.inv, Base.intersect #, Base.zeta
 import Base.adjoint, Base.*, Base.+, Base./
 import Base: ==, eltype, vcat, hcat, \
 
-import SimpleGraphs.add!, SimpleGraphs.has, SimpleGraphs.delete!
-import SimpleGraphs.relabel
+import SimpleGraphs: add!, has, delete!, relabel, components
 
 export SimplePoset, IntPoset, check, hash, eltype
 export elements, relations, incomparables
@@ -24,7 +24,7 @@ export RandomPoset, PartitionLattice
 
 export ComparabilityGraph, CoverDigraph
 
-export inv, intersect, stack, height, induce
+export inv, intersect, height, induce
 
 """
 `SimplePoset()` creates a new partially ordered set (poset) in which
@@ -916,7 +916,6 @@ function height(P::SimplePoset)
     return result
 end
 
-using SimplePartitions
 
 
 """
@@ -965,6 +964,15 @@ function induce(P::SimplePoset{T}, A::Set) where {T}
     end
 
     return Q
+end
+
+"""
+    components(P::SimplePoset)
+
+Returns the ground sets of the connected components of `P` (as a `Partition`).
+"""
+function components(P::SimplePoset)
+    components(simplify(P.D))
 end
 
 
