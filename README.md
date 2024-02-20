@@ -48,6 +48,7 @@ document `addition-deletion.pdf` found in the `doc` folder.
   `x<z<y`.
 * `maximals(P)` returns a list of the maximal elements of `P`.
 * `minimals(P)` returns a list of the minimal elements of `P`.
+* `components(P)` returns the ground sets of the connected components of `P` as a `Partition`.
 
 
 The following functions are not likely to be called by the casual user.
@@ -180,7 +181,6 @@ the sum it becomes the element `(x,i)`. For example:
 * `zeta_matrix(P)` produces the zeta matrix. Order of elements is the
   same as produced by `elements(P)`.
 * `height(P)` returns the maximum size of a chain.
-* `components(P)` returns the ground sets of the connected components of `P` as a `Partition`.
 
 ## Linear extensions
 
