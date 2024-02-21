@@ -155,7 +155,7 @@ card(P::SimplePoset) = NV(P.D)
 
 # How we print posets to the terminal
 function show(io::IO, P::SimplePoset)
-    print(io, "SimplePoset{$(eltype(P))} ($(card(P)) elements)")
+    print(io, "SimplePoset ($(card(P)) elements)")
 end
 
 display(P::SimplePoset) = show(P)
