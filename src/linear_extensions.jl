@@ -1,28 +1,33 @@
 # Experimental functions for linear extensions
 
-export linear_extension, linear_extension_empty!, all_linear_extensions, random_linear_extension
+export linear_extension,
+    linear_extension_empty!, all_linear_extensions, random_linear_extension
 
 
 """
-`linear_extension(P)` returns a linear extension of the poset `P`.
+    linear_extension(P::SimplePoset) 
+
+Return a linear extension of the poset `P`.
 """
-function linear_extension(P::SimplePoset{T}) where T
+function linear_extension(P::SimplePoset{T}) where {T}
     PP = deepcopy(P)
     result = linear_extension_empty!(PP)
     return result
 end
 
 """
-`linear_extension_empty!(P)` returns a linear extension of the poset `P`,
+    linear_extension_empty!(PP::SimplePoset) 
+
+Return a linear extension of the poset `P`,
 but also empties the poset `P`. This is a destructive operation.
 """
-function linear_extension_empty!(PP::SimplePoset{T}) where T
+function linear_extension_empty!(PP::SimplePoset{T}) where {T}
     result = T[]
-    while card(PP)>0
+    while card(PP) > 0
         M = minimals(PP)
         append!(result, M)
         for x in M
-            delete!(PP,x)
+            delete!(PP, x)
         end
     end
     return result
@@ -30,7 +35,9 @@ end
 
 
 """
-`random_linear_extension(P)` generates a linear extension of `P`
+    random_linear_extension(P::SimplePoset) 
+
+Generate a linear extension of `P`
 at random. This is slower than `linear_extension(P)` if one just
 wants some linear extension.
 
@@ -41,38 +48,42 @@ all minimal elements, and that becomes the first (lowest) element in
 the linear extension. Then `x` is deleted and the same process is
 repeated until all elements have been processed.
 """
-function random_linear_extension(P::SimplePoset{T}) where T
+function random_linear_extension(P::SimplePoset{T}) where {T}
     result = T[]
     PP = deepcopy(P)
     while card(PP) > 0
         x = rand(minimals(PP))  # choose a min el't at random
-        push!(result,x)
-        delete!(PP,x)
+        push!(result, x)
+        delete!(PP, x)
     end
     return result
 end
 
-_LX_table = Dict{SimplePoset, Set}()
+_LX_table = Dict{SimplePoset,Set}()
 export clear_LX_table
 
 """
-`clear_LX_table()` releases cached results computed by
+    clear_LX_table()
+
+Clears cached results computed by
 `all_linear_extensions`.
 """
 function clear_LX_table()
-    global _LX_table = Dict{SimplePoset, Set}()
+    global _LX_table = Dict{SimplePoset,Set}()
     nothing
 end
 
 """
-`all_linear_extensions(P)` returns the `Set` of all linear extensions
+    all_linear_extensions(P::SimplePoset)::Set
+
+Return the `Set` of all linear extensions
 of `P`. This can take a very long time and eat up a lot of memory
 (which can be freed using `clear_LX_table`).
 """
 function all_linear_extensions(P::SimplePoset)::Set
     # see if we already have an answer
     global _LX_table
-    if haskey(_LX_table,P)
+    if haskey(_LX_table, P)
         return _LX_table[P]
     end
 
@@ -90,11 +101,11 @@ function all_linear_extensions(P::SimplePoset)::Set
     M = maximals(P)
     for x in M
         PP = deepcopy(P)
-        delete!(PP,x)
+        delete!(PP, x)
         PP_exts = all_linear_extensions(PP)
         for L in PP_exts
             LL = deepcopy(L)
-            append!(LL,[x])
+            append!(LL, [x])
             push!(result, LL)
         end
     end

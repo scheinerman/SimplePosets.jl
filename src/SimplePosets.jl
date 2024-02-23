@@ -50,6 +50,7 @@ SimplePoset(T::DataType = Any) = SimplePoset{T}()
 
 """
     SimplePoset(G::UG)
+    
 Create a poset `P` whose elements are the vertices and edges of `G`.
 The relations in `P` are of the form `v < e` exactly when `v` is and
 end point of `e`.
@@ -101,7 +102,7 @@ function check(P::SimplePoset)
 end
 
 """
-`eltype(P::SimplePoset)` returns the type of elements in this `SimplePoset`.
+`eltype(P::SimplePoset)` returns the type of elements in `P`.
 """
 eltype(P::SimplePoset{T}) where {T} = T
 
@@ -115,13 +116,17 @@ hash(P::SimplePoset, h::UInt64 = UInt64(0)) = hash(P.D, h)
 
 # return a list of the elements in P
 """
-`elements(P)` returns a list of the elements of `P`.
+    elements(P::SimplePoset)
+
+Returns a list of the elements of `P`.
 """
 elements(P::SimplePoset) = vlist(P.D)
 
 # return a list of all the < relations in P
 """
-`relations(P)` returns a list of ordered pairs `(u,v)` where `u` and
+    relations(P::SimplePoset)
+
+Return a list of ordered pairs `(u,v)` where `u` and
 `v` are elements of the poset that satisfy `u<v` in `P`.
 """
 relations(P::SimplePoset) = elist(P.D)
@@ -129,7 +134,9 @@ relations(P::SimplePoset) = elist(P.D)
 # list all pairs of elements that are incomparable to each other
 
 """
-`incomparables(P)` returns a list of ordered pairs `(u,v)` such that
+    incomparables(P::SimplePoset{T}) where {T}
+
+Returns a list of ordered pairs `(u,v)` such that
 `u` and `v` are incomparable in `P`. Note that if `(u,v)` appears in
 the list, we do not also include `(v,u)`.
 """
@@ -149,7 +156,9 @@ end
 
 # return the cardinality of this poset
 """
-`card(P)` returns the cardinality (number of elements) of `P`.
+    card(P::SimplePoset)
+
+Return the cardinality (number of elements) of `P`.
 """
 card(P::SimplePoset) = NV(P.D)
 
@@ -162,6 +171,9 @@ display(P::SimplePoset) = show(P)
 
 # Add an element to the groundset of this poset
 """
+    add!(P::SimplePoset{T}, x) 
+    add!(P::SimplePoset{T}, x, y)
+
 `add!(P,x)` adds the element `x` to the poset with no relations to any
 other elements.
 
@@ -174,6 +186,7 @@ function add!(P::SimplePoset{T}, x) where {T}
 end
 
 # Add x<y as a relation in this poset
+
 function add!(P::SimplePoset{T}, x, y) where {T}
     # start with some basic checks
     if !has(P, x)
@@ -202,6 +215,10 @@ end
 
 # Delete an element from P
 """
+    delete!(P::SimplePoset, x)
+    delete!(P::SimplePoset, x, y)
+
+
 `delete!(P,x)` deletes the element `x` from the poset `P`.
 
 `delete!(P,x,y)` deletes the relation `x<y` from `P` (assuming that
@@ -234,6 +251,10 @@ end
 # Check if a particular element is in the ground set
 
 """
+    has(P::SimplePoset{T}, x) 
+    has(P::SimplePoset{T}, x, y) 
+
+
 `has(P,x)` checks if `x` is an element of the poset `P`.
 
 `has(P,x,y)` checks if `x<y` is a relation in the poset `P`.
@@ -246,7 +267,9 @@ has(P::SimplePoset{T}, x, y) where {T} = has(P.D, x, y)
 # return a list of all elements > xe
 
 """
-`above(P,x)` returns a list of all elements `y` in the poset `P` for
+    above(P::SimplePoset, x)
+
+Return a list of all elements `y` in the poset `P` for
 which `x<y`.
 """
 function above(P::SimplePoset, x)
@@ -257,7 +280,9 @@ function above(P::SimplePoset, x)
 end
 
 """
-`below(P,x)` returns a list of all elements `y` in the poset `P` for
+    below(P::SimplePoset, x)
+
+Return a list of all elements `y` in the poset `P` for
 which `y<x`.
 """
 function below(P::SimplePoset, x)
@@ -270,7 +295,9 @@ end
 # return a list of all elements z with x < z < y
 
 """
-`interval(P,x,y)` returns a list of all elements `z` in the poset `P`
+    interval(P::SimplePoset, x, y)
+
+Returns a list of all elements `z` in the poset `P`
 for which `x<z<y`.
 """
 function interval(P::SimplePoset, x, y)
@@ -281,6 +308,9 @@ end
 
 # Construct an antichain with n elements 1,2,...,n
 """
+    Antichain(n::Int)
+    Antichain(els::Array{T,1}) 
+
 `AntiChain(n)` creates a new poset with `Int` elements `1:n` with no
 relations between those elements.
 
@@ -305,6 +335,7 @@ elements `1:n` but no relations.
 IntPoset(n::Int) = Antichain(n)
 
 # Construction an antichain from a list of elements
+
 function Antichain(els::Array{T,1}) where {T}
     P = SimplePoset(T)
     for e in els
@@ -315,6 +346,9 @@ end
 
 # Construct a chain 1<2<3<...<n
 """
+    Chain(n::Int)
+    Chain(list::Array{T,1}) 
+
 `Chain(n)` creates a new poset whose elements are the `Int` values
 `1:n` with the relations `1<2<3<...<n`.
 
@@ -335,6 +369,7 @@ function Chain(n::Int)
 end
 
 # Construct a chain given a list of elements
+
 function Chain(els::Array{T,1}) where {T}
     P = Antichain(els)
     n = length(els)
@@ -385,7 +420,9 @@ end
 
 # Create the poset of the divisors of a positive integer
 """
-`Divisors(n)` creates a new poset whose elements are the positive
+    Divisors(n::Int)
+
+Create a new poset whose elements are the positive
 divisor of `n` (including `1` and `n` itself) in which we have the
 relations `(u,v)` precisely when `u` is a factor of `v`.
 """
@@ -414,7 +451,9 @@ end
 # Create the Boolean lattice poset. Elements are n-long binary
 # strings.
 """
-`BooleanLattice(n)` creates the Boolean lattice whose elements are `n`-long
+    BooleanLattice(n::Int)
+
+Create the Boolean lattice whose elements are `n`-long
 character strings of 0s and 1s. Ordering is coordinatewise.
 """
 function BooleanLattice(n::Int)
@@ -452,7 +491,9 @@ end
 # Create a random d-dimensional poset with n elements
 
 """
-`RandomPoset(n,d)` creates a random `d`-dimensional poset with
+    RandomPoset(n::Int, d::Int)
+
+Create a random `d`-dimensional poset with
 elements `1:n`.
 """
 function RandomPoset(n::Int, d::Int)
@@ -484,7 +525,9 @@ end
 # upper level by positives.
 
 """
-`StandardExample(n)` creates a new poset with `2n` elements in two
+    StandardExample(n::Int)
+
+Create a new poset with `2n` elements in two
 levels. Each element on the lower level is below exactly `n-1`
 elements from the upper level.
 
@@ -544,18 +587,24 @@ end
 # maximal and minimal elements
 
 """
-`maximals(P)` returns a list of maximal elements of `P`.
+    maximals(P::SimplePoset)
+
+Return a list of maximal elements of `P`.
 """
 maximals(P::SimplePoset) = filter(x -> out_deg(P.D, x) == 0, elements(P))
 
 """
-`minimals(P)` returns a list of minimal elements of `P`.
+    minimals(P::SimplePoset)
+
+Return a list of minimal elements of `P`.
 """
 minimals(P::SimplePoset) = filter(x -> in_deg(P.D, x) == 0, elements(P))
 
 # The inverse of a poset is a new poset with the order reversed
 """
-`inv(P)` creates a new poset with the same elements as `P` in which
+    inv(P::SimplePoset{T})
+
+Create a new poset with the same elements as `P` in which
 all of `P`'s relations have been reversed. That is `(u,v)` is a
 relation of `P` iff `(v,u)` is a relation of `inv(P)`.
 
@@ -582,7 +631,9 @@ adjoint(P::SimplePoset) = inv(P)
 # sets first.
 
 """
-`intersect(P,Q)` constructs a new poset that is the intersection of
+    intersect(P::SimplePoset{T}, Q::SimplePoset{T}) where {T}
+
+Construct a new poset that is the intersection of
 the two given posets (which must contain elements of the same
 datatype).
 """
@@ -751,7 +802,9 @@ end
 # Zeta function as a matrix
 
 """
-`zeta_matrix(P)` creates the zeta matrix of a poset `P`. The
+    zeta_matrix(P::SimplePoset)
+
+Create the zeta matrix of a poset `P`. The
 rows/columns of this matrix are indexed by the elements of `P`. We
 have a `1` in the `i,j`-position exactly when the `i`th element of `P`
 is `<=` the `j`th element of `P`.
@@ -777,7 +830,9 @@ end
 # Mobius function as a matrix
 
 """
-`mobius_matrix(P)` returns the inverse of `zeta_matrix(P)`.
+    mobius_matrix(P::SimplePoset)
+
+Return the inverse of `zeta_matrix(P)`.
 """
 mobius_matrix(P::SimplePoset) = round.(Int, inv(zeta_matrix(P)))
 
@@ -806,7 +861,9 @@ end
 # Mobius function of this poset.
 
 """
-`mobius(P)` returns the Mobius function of the poset `P` as a `Dict`.
+    mobius(P::SimplePoset{T}) 
+
+Return the Möbius function of the poset `P` as a `Dict`.
 See `zeta`.
 """
 function mobius(P::SimplePoset{T}) where {T}
@@ -828,7 +885,9 @@ end
 # The comparability graph of a poset
 
 """
-`ComparabilityGraph(P)` returns the comparability graph of the poset
+    ComparabilityGraph(P::SimplePoset)
+
+Returns the comparability graph of the poset
 `P`. The result is a `SimpleGraph` whose vertices are the elements of
 `P` in which there is an edge `(u,v)` provided `(u,v)` or `(v,u)` is a
 relation of `P`.
@@ -838,7 +897,9 @@ ComparabilityGraph(P::SimplePoset) = simplify(P.D)
 # The CoverDigraph of a poset P is a directed graph that has the same
 # vertices as P, in which (x,y) is an edge iff x<y and there is no z with x<z<y
 """
-`CoverDigraph(P)` creates a `SimpleDirectedGraph` `G` whose vertices
+    CoverDigraph(P::SimplePoset{T})
+
+Create a `DirectedGraph` `G` whose vertices
 are the elements of `P` and in which we have the edge `(u,v)`
 provided: (a) `u<v` is a relation of `P` and (b) there is no `w` in
 `P` with `u<w<v`.
@@ -871,6 +932,9 @@ end
 # element names to new
 
 """
+    relabel(P::SimplePoset{S}, label::Dict{S,T}) 
+    relabel(P::SimplePoset{S}) 
+
 `relabel(P)` creates a new poset `P` in which the elements are
 relabeled using the values `1:n` (where `n=card(P)`).
 
@@ -883,6 +947,7 @@ function relabel(P::SimplePoset{S}, label::Dict{S,T}) where {S,T}
 end
 
 # Relabel the elements with the integers 1:n
+
 function relabel(P::SimplePoset{S}) where {S}
     verts = vlist(P.D)
     n = length(verts)
@@ -899,7 +964,9 @@ end
 # Compute the height by stripping off minimals repeatedly
 
 """
-`height(P)` gives the size of a largest chain in the poset `P`.
+    height(P::SimplePoset)
+
+Return the size of a largest chain in the poset `P`.
 """
 function height(P::SimplePoset)
     PP = deepcopy(P)
@@ -919,7 +986,9 @@ end
 
 
 """
-`PartitionLattice(n)` creates the poset whose elements are the
+    PartitionLattice(n::Int)
+
+Create the poset whose elements are the
 partitions of the set `{1,2,...,n}` ordered by refinement.
 """
 function PartitionLattice(n::Int)
@@ -943,7 +1012,9 @@ export induce
 
 
 """
-`induce(P::SimplePoset, A::Set)` creates the induced subposet of `P`
+    induce(P::SimplePoset{T}, A::Set) 
+
+Create the induced subposet of `P`
 using the elements of `A`.
 """
 function induce(P::SimplePoset{T}, A::Set) where {T}
