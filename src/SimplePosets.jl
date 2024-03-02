@@ -8,7 +8,7 @@ import Base.inv, Base.intersect #, Base.zeta
 import Base.adjoint, Base.*, Base.+, Base./
 import Base: ==, eltype, vcat, hcat, \
 
-import SimpleGraphs: add!, has, delete!, relabel, components
+import SimpleGraphs: add!, has, delete!, relabel, components, is_connected
 
 export SimplePoset, IntPoset, check, hash, eltype
 export elements, relations, incomparables
@@ -1044,6 +1044,16 @@ Returns the ground sets of the connected components of `P` (as a `Partition`).
 """
 function components(P::SimplePoset)
     components(simplify(P.D))
+end
+
+
+"""
+    is_connected(P::SimplePoset)::Bool
+
+Determine if the poset is connected (i.e., if its comparability graph is connected).
+"""
+function is_connected(P::SimplePoset)::Bool
+    is_connected(simplify(P.D))
 end
 
 

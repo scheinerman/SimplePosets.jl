@@ -49,6 +49,7 @@ document `addition-deletion.pdf` found in the `doc` folder.
 * `maximals(P)` returns a list of the maximal elements of `P`.
 * `minimals(P)` returns a list of the minimal elements of `P`.
 * `components(P)` returns the ground sets of the connected components of `P` as a `Partition`.
+* `is_connected(P)` determines if (the comparability graph of) the poset is connected.
 
 
 The following functions are not likely to be called by the casual user.
